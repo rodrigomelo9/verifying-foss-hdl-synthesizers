@@ -2,13 +2,14 @@
 
 ISE=/opt/Xilinx/ise
 VIVADO=/opt/Xilinx/vivado
+TASK=syn
 
 vpath %.zip downloads
 
 all: iverilog
 
 #
-# Downloads
+# Prepare
 #
 
 xstug_examples.zip:
@@ -16,10 +17,6 @@ xstug_examples.zip:
 
 ug901-vivado-synthesis-examples.zip:
 	wget -P downloads -c www.xilinx.com/support/documentation/sw_manuals/xilinx2018_3/ug901-vivado-synthesis-examples.zip
-
-#
-# Prepare examples
-#
 
 examples: xstug_examples.zip ug901-vivado-synthesis-examples.zip
 	mkdir -p examples
@@ -37,45 +34,57 @@ examples: xstug_examples.zip ug901-vivado-synthesis-examples.zip
 
 VERILOGS  = $(shell find examples/ -type f -name '*.v')
 
+
 # Filtering Files with iverilog complains
 ## Syntax errors in ports declarations
-VERILOGS := $(filter-out examples/vivado/xor_top.v                                                              , $(VERILOGS))
-VERILOGS := $(filter-out examples/vivado/sfir_even_symmetric_systolic_top.v                                     , $(VERILOGS))
-VERILOGS := $(filter-out examples/vivado/sfir_shifter.v                                                         , $(VERILOGS))
+VERILOGS_TO_FILTER  = examples/vivado/xor_top.v
+VERILOGS_TO_FILTER += examples/vivado/sfir_even_symmetric_systolic_top.v
+VERILOGS_TO_FILTER += examples/vivado/sfir_shifter.v
 ## Is a VHDL package with stranger things
-VERILOGS := $(filter-out examples/vivado/procedure_package_1.v                                                  , $(VERILOGS))
+VERILOGS_TO_FILTER += examples/vivado/procedure_package_1.v
 ## Is a zip file
-VERILOGS := $(filter-out examples/vivado/tristates_3.v                                                          , $(VERILOGS))
-## Invalid code (missing generate statement), well solved in bytewrite_writefirst.v
-VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/rams/bytewrite_writefirst_test2.v                   , $(VERILOGS))
+VERILOGS_TO_FILTER += examples/vivado/tristates_3.v
+### Invalid code (missing generate statement), well solved in bytewrite_writefirst.v
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/rams/bytewrite_writefirst_test2.v
 ## 24: error: Array RAM needs an array index here.
-VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/rams/rams_25.v                                      , $(VERILOGS))
-
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/rams/rams_25.v
 # Filtering Files with unsupported Yosys features
 ## The primitive keyword is unsupported
-VERILOGS := $(filter-out examples/ise/Verilog_Language_Support/user_defined_primitives/udp_sequential_1.v       , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/Verilog_Language_Support/user_defined_primitives/udp_sequential_2.v       , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/Verilog_Language_Support/user_defined_primitives/udp_combinatorial_1.v    , $(VERILOGS))
-
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/user_defined_primitives/udp_sequential_1.v
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/user_defined_primitives/udp_sequential_2.v
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/user_defined_primitives/udp_combinatorial_1.v
+## Filtering others not synthesizable
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/assign_deassign/assign_deassign_good.v
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/assign_deassign/assign_deassign_reject_2.v
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/assign_deassign/assign_deassign_reject_1.v
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/assign_deassign/assign_deassign_reject_3.v
 # Filtering duplicated Files
 ## find -name '*.v' -type f -printf '%p %f\n' | sort -t ' ' -k 2,2 | uniq -f 1 --all-repeated=separate | cut -d' ' -f1
-VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/black_box/black_box_1.v                             , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/rams/bytewrite_ram_1b.v                             , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR_verilog/DelayLine.v         , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/dynamic_shift_registers/dynamic_shift_registers_1.v , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR_verilog/FilterStage.v       , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/Verilog_Language_Support/system_tasks/finish_ignored_1.v                  , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/Verilog_Language_Support/system_tasks/finish_supported_1.v                , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/Verilog_Language_Support/functions_tasks/functions_1.v                    , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/Verilog_Language_Support/functions_tasks/functions_constant.v             , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/Verilog_Language_Support/parameter/parameter_1.v                          , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/Verilog_Language_Support/parameter/parameter_generate_for_1.v             , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/registers/registers_1.v                             , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/shift_registers/shift_registers_0.v                 , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/shift_registers/shift_registers_1.v                 , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/Verilog_Language_Support/functions_tasks/tasks_1.v                        , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/tristates/tristates_1.v                             , $(VERILOGS))
-VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/tristates/tristates_2.v                             , $(VERILOGS))
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/black_box/black_box_1.v
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/rams/bytewrite_ram_1b.v
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR_verilog/DelayLine.v
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR_verilog/FilterStage.v
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dynamic_shift_registers/dynamic_shift_registers_1.v
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/system_tasks/finish_ignored_1.v
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/system_tasks/finish_supported_1.v
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/functions_tasks/functions_1.v
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/functions_tasks/functions_constant.v
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/parameter/parameter_1.v
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/parameter/parameter_generate_for_1.v
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/registers/registers_1.v
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/shift_registers/shift_registers_0.v
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/shift_registers/shift_registers_1.v
+VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/functions_tasks/tasks_1.v
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/tristates/tristates_1.v
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/tristates/tristates_2.v
+# Filtering files which are anyway analyzed because are included
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR_verilog/DelayLine.v
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR_verilog/FilterStage.v
+
+
+VERILOGS := $(filter-out $(VERILOGS_TO_FILTER), $(VERILOGS))
+
+NO_OF_VERILOGS = $(words $(VERILOGS))
 
 #
 # iVerilog analysis
@@ -83,16 +92,81 @@ VERILOGS := $(filter-out examples/ise/HDL_Coding_Techniques/tristates/tristates_
 
 IVERILOG_EXTRA= support/blackboxes.v -yexamples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR_verilog
 
-iverilog: examples
-	@echo "Analysing with iVerilog"
+iverilog:
+	@echo "Analysing $(NO_OF_VERILOGS) files with iVerilog"
 	@$(foreach FILE, $(VERILOGS), $(shell iverilog $(IVERILOG_EXTRA) $(FILE)))
+	@echo "DONE"
+
+#
+# Synthesis with Yosys
+#
+
+# Filtering Files with Yosys complains
+## System hang-out
+TO_FILTER_IN_YOSYS  = examples/vivado/asym_ram_tdp_write_first.v
+
+VERILOGS_FOR_YOSYS  = $(filter-out $(TO_FILTER_IN_YOSYS), $(VERILOGS))
+
+NO_OF_VERILOGS_FOR_YOSYS = $(words $(VERILOGS_FOR_YOSYS))
+
+yosys yosys-ise yosys-vivado:
+	mkdir -p reports/$@
+	@echo "Analysing $(NO_OF_VERILOGS_FOR_YOSYS) files with $@"
+	@$(foreach FILE, $(VERILOGS_FOR_YOSYS), \
+		echo "* Analizyng $(FILE)"; \
+		fpga-hdl2bit --outdir temp/yosys --tool $@ --run $(TASK) $(FILE) > \
+		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
+	)
+	@echo "DONE"
+
+#
+# Synthesis with ISE
+#
+
+# Filtering Files with ISE complains
+TO_FILTER_IN_ISE  =
+
+VERILOGS_FOR_ISE  = $(filter-out $(TO_FILTER_IN_ISE), $(VERILOGS))
+
+NO_OF_VERILOGS_FOR_ISE = $(words $(VERILOGS_FOR_ISE))
+
+ise:
+	mkdir -p reports/$@
+	@echo "Analysing $(NO_OF_VERILOGS_FOR_ISE) files with $@"
+	@$(foreach FILE, $(VERILOGS_FOR_ISE), \
+		echo "* Analizyng $(FILE)"; \
+		fpga-hdl2bit --outdir temp/ise --tool $@ --run $(TASK) $(FILE) > \
+		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
+	)
+	@echo "DONE"
+
+#
+# Synthesis with Vivado
+#
+
+# Filtering Files with Vivado complains
+TO_FILTER_IN_VIVADO  =
+
+VERILOGS_FOR_VIVADO  = $(filter-out $(TO_FILTER_IN_VIVADO), $(VERILOGS))
+
+NO_OF_VERILOGS_FOR_VIVADO = $(words $(VERILOGS_FOR_VIVADO))
+
+vivado:
+	mkdir -p reports/$@
+	@echo "Analysing $(NO_OF_VERILOGS_FOR_VIVADO) files with $@"
+	@$(foreach FILE, $(VERILOGS_FOR_VIVADO), \
+		echo "* Analizyng $(FILE)"; \
+		fpga-hdl2bit --outdir temp/vivado --tool $@ --run $(TASK) $(FILE) > \
+		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
+	)
+	@echo "DONE"
 
 #
 # Clean
 #
 
 clean:
-	rm -fr a.out examples
+	rm -fr a.out temp
 
 clean-all: clean
-	rm -fr downloads
+	rm -fr downloads examples reports
