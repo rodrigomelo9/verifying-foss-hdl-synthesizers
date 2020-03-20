@@ -90,7 +90,9 @@ NO_OF_VERILOGS = $(words $(VERILOGS))
 # iVerilog analysis
 #
 
-IVERILOG_EXTRA= support/blackboxes.v -yexamples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR_verilog
+IVERILOG_EXTRA = \
+support/blackboxes.v \
+-yexamples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR_verilog
 
 iverilog:
 	@echo "Analysing $(NO_OF_VERILOGS) files with iVerilog"
@@ -109,18 +111,26 @@ VERILOGS_FOR_YOSYS  = $(filter-out $(TO_FILTER_IN_YOSYS), $(VERILOGS))
 
 NO_OF_VERILOGS_FOR_YOSYS = $(words $(VERILOGS_FOR_YOSYS))
 
+GENERAL_DEPS = \
+-f examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR_verilog/DelayLine.v \
+-f examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR_verilog/FilterStage.v
+
+YOSYS_DEPS = \
+$(GENERAL_DEPS) \
+-f support/blackboxes.v
+
 yosys yosys-ise yosys-vivado:
 	mkdir -p reports/$@
 	@echo "Analysing $(NO_OF_VERILOGS_FOR_YOSYS) files with $@"
 	@$(foreach FILE, $(VERILOGS_FOR_YOSYS), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/yosys --tool $@ --run $(TASK) $(FILE) > \
+		fpga-hdl2bit --outdir temp/yosys --tool $@ $(YOSYS_DEPS) --run $(TASK) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
 
 #
-# Synthesis with ISE
+# Synthesis with Xilinx tools
 #
 
 # Filtering Files with ISE complains
@@ -135,14 +145,10 @@ ise:
 	@echo "Analysing $(NO_OF_VERILOGS_FOR_ISE) files with $@"
 	@$(foreach FILE, $(VERILOGS_FOR_ISE), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/ise --tool $@ --run $(TASK) $(FILE) > \
+		fpga-hdl2bit --outdir temp/ise --tool $@ $(GENERAL_DEPS) --run $(TASK) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
-
-#
-# Synthesis with Vivado
-#
 
 # Filtering Files with Vivado complains
 TO_FILTER_IN_VIVADO  =
@@ -156,7 +162,7 @@ vivado:
 	@echo "Analysing $(NO_OF_VERILOGS_FOR_VIVADO) files with $@"
 	@$(foreach FILE, $(VERILOGS_FOR_VIVADO), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/vivado --tool $@ --run $(TASK) $(FILE) > \
+		fpga-hdl2bit --outdir temp/vivado --tool $@ $(GENERAL_DEPS) --run $(TASK) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
