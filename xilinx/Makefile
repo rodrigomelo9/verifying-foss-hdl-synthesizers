@@ -168,6 +168,16 @@ vivado:
 	@echo "DONE"
 
 #
+# Report Errors
+#
+
+report-errors:
+	@$(foreach DIR,$(wildcard reports/*), \
+		echo "*\n* $(DIR)\n*"; \
+		grep -rn "ERROR:" $(DIR); \
+	)
+
+#
 # Clean
 #
 
