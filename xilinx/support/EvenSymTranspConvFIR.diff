@@ -1,0 +1,12 @@
+--- ../examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR_verilog/EvenSymTranspConvFIR.v	2010-02-17 12:09:32.000000000 -0300
++++ EvenSymTranspConvFIR.v	2020-03-19 23:21:05.476342366 -0300
+@@ -88,7 +88,7 @@
+         .dout(dout_bus[i+1])
+       );
+ 
+-    end;  
+-  endgenerate;  
++    end
++  endgenerate
+   
+ endmodule

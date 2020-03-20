@@ -1,0 +1,12 @@
+--- ../examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR_verilog/OddSymTranspConvFIR.v	2010-02-16 12:12:32.000000000 -0300
++++ OddSymTranspConvFIR.v	2020-03-19 23:21:14.720531140 -0300
+@@ -122,7 +122,7 @@
+         .dout(dout_bus[i+1])
+       );
+ 
+-    end;  
+-  endgenerate;  
++    end
++  endgenerate
+   
+ endmodule
