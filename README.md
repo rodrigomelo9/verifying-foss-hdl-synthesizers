@@ -1,5 +1,10 @@
 # Yosys versus: a project to check the FOSS synthesizer against vendors EDA tools
 
+The aim of this project is to provide feedback about things supported by the vendor EDA tools,
+which presents problems in Yosys.
+
+> Disclaimer: it is an independent project, not endorsed by the Yosys project.
+
 ## System prepare (Debian based distributions and probably others GNU/Linux systems)
 
 * Install Yosys following [https://github.com/YosysHQ/yosys#setup](this) instructions.
