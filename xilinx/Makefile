@@ -80,6 +80,11 @@ VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/tristates/tristates_2.v
 # Filtering files which are anyway analyzed because are included
 VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR_verilog/DelayLine.v
 VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR_verilog/FilterStage.v
+# Filtering examples with $finish
+## It is supported by all the tools (and fails)
+VERILOGS_TO_FILTER += examples/vivado/finish_supported_1.v
+## Yosys abort and ISE/Vivado ignore it
+VERILOGS_TO_FILTER += examples/vivado/finish_ignored_1.v
 
 
 VERILOGS := $(filter-out $(VERILOGS_TO_FILTER), $(VERILOGS))
@@ -106,6 +111,12 @@ iverilog:
 # Filtering Files with Yosys complains
 ## System hang-out
 TO_FILTER_IN_YOSYS  = examples/vivado/asym_ram_tdp_write_first.v
+## Unsupported by Yosys and seems not standard (https://github.com/YosysHQ/yosys/issues/1800)
+TO_FILTER_IN_YOSYS += examples/vivado/parameter_1.v
+## True dual-port memories are not yet supported (https://github.com/YosysHQ/yosys/issues/1802)
+TO_FILTER_IN_YOSYS += examples/vivado/asym_ram_tdp_read_first.v
+TO_FILTER_IN_YOSYS += examples/vivado/asym_ram_tdp_write_first.v
+
 
 VERILOGS_FOR_YOSYS  = $(filter-out $(TO_FILTER_IN_YOSYS), $(VERILOGS))
 
@@ -134,7 +145,14 @@ yosys yosys-ise yosys-vivado:
 #
 
 # Filtering Files with ISE complains
-TO_FILTER_IN_ISE  =
+## Rejected by ISE:
+## Mix of blocking and non-blocking assignments to variable <o> is not a recommended coding practice.
+## INFO - You can change the severity of this error message to warning using switch -change_error_to_warning "HDLCompiler:1511"
+TO_FILTER_IN_ISE  = examples/ise/Verilog_Language_Support/rejected/blockingmix1.v
+TO_FILTER_IN_ISE += examples/ise/Verilog_Language_Support/rejected/blockingmix2.v
+## The INIT value is specified with an attribute, which is rejected by XST
+TO_FILTER_IN_ISE += examples/ise/FPGA_Optimization/primitive_support/primitive_1.v
+
 
 VERILOGS_FOR_ISE  = $(filter-out $(TO_FILTER_IN_ISE), $(VERILOGS))
 
@@ -151,7 +169,15 @@ ise:
 	@echo "DONE"
 
 # Filtering Files with Vivado complains
-TO_FILTER_IN_VIVADO  =
+## Unsupported RAM template
+TO_FILTER_IN_VIVADO  = examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_3.v
+TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_1.v
+TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2d.v
+TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_3.v
+TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_4.v
+TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2c.v
+TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_2.v
+
 
 VERILOGS_FOR_VIVADO  = $(filter-out $(TO_FILTER_IN_VIVADO), $(VERILOGS))
 
@@ -174,7 +200,8 @@ vivado:
 report-errors:
 	@$(foreach DIR,$(wildcard reports/*), \
 		echo "*\n* $(DIR)\n*"; \
-		grep -rn "ERROR:" $(DIR); \
+		grep -rin "ERROR:" $(DIR); \
+		grep -rin "Aborted" $(DIR); \
 	)
 
 #
