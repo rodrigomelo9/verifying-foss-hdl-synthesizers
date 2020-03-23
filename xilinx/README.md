@@ -17,3 +17,10 @@ simulator.
     * `vivado`: synthesis using vivado.
 * The default operation is synthesis (`syn`) but can be changed to implementation (`imp`) using:
 `make TASK=imp <TARGET>`
+
+## Remarks
+
+* Unsupported non-standard things in Yosys (vs ISE/Vivado):
+    * Specification of parameters without parenthesis in module instantiation.
+    * Use of semicolon after an `end`/`endmodule`.
+* Several asymmetric rams which are supported by ISE are not supported by Vivado.
