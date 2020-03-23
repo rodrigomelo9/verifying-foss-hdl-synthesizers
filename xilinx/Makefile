@@ -61,6 +61,7 @@ VERILOGS_TO_FILTER += examples/ise/Verilog_Language_Support/assign_deassign/assi
 # Filtering duplicated Files
 ## find -name '*.v' -type f -printf '%p %f\n' | sort -t ' ' -k 2,2 | uniq -f 1 --all-repeated=separate | cut -d' ' -f1
 VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/black_box/black_box_1.v
+VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/rams/bytewrite_ram_1a.v
 VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/rams/bytewrite_ram_1b.v
 VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR_verilog/DelayLine.v
 VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR_verilog/FilterStage.v
@@ -109,12 +110,22 @@ iverilog:
 #
 
 # Filtering Files with Yosys complains
-## System hang-out
-TO_FILTER_IN_YOSYS  = examples/vivado/asym_ram_tdp_write_first.v
 ## Unsupported by Yosys and seems not standard (https://github.com/YosysHQ/yosys/issues/1800)
 TO_FILTER_IN_YOSYS += examples/vivado/parameter_1.v
 ## True dual-port memories are not yet supported (https://github.com/YosysHQ/yosys/issues/1802)
+TO_FILTER_IN_YOSYS += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2c.v
+TO_FILTER_IN_YOSYS += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2d.v
+TO_FILTER_IN_YOSYS += examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_1.v
+TO_FILTER_IN_YOSYS += examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_2.v
+TO_FILTER_IN_YOSYS += examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_3.v
+TO_FILTER_IN_YOSYS += examples/ise/HDL_Coding_Techniques/rams/rams_16.v
+TO_FILTER_IN_YOSYS += examples/vivado/bytewrite_tdp_ram_rf.v
+TO_FILTER_IN_YOSYS += examples/vivado/bytewrite_tdp_ram_readfirst2.v
+TO_FILTER_IN_YOSYS += examples/vivado/bytewrite_tdp_ram_wf.v
+TO_FILTER_IN_YOSYS += examples/vivado/bytewrite_tdp_ram_nc.v
+TO_FILTER_IN_YOSYS += examples/vivado/rams_tdp_rf_rf.v
 TO_FILTER_IN_YOSYS += examples/vivado/asym_ram_tdp_read_first.v
+### This in particular never ends
 TO_FILTER_IN_YOSYS += examples/vivado/asym_ram_tdp_write_first.v
 
 

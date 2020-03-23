@@ -23,4 +23,11 @@ simulator.
 * Unsupported non-standard things in Yosys (vs ISE/Vivado):
     * Specification of parameters without parenthesis in module instantiation.
     * Use of semicolon after an `end`/`endmodule`.
-* Several asymmetric rams which are supported by ISE are not supported by Vivado.
+* Several asymmetric rams which are supported by ISE are not supported by Vivado:
+    * examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_3.v
+    * examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_1.v
+    * examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2d.v
+    * examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_3.v
+    * examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_4.v
+    * examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2c.v
+    * examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_2.v
