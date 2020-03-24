@@ -2,7 +2,7 @@
 
 ISE=/opt/Xilinx/ise
 VIVADO=/opt/Xilinx/vivado
-TASK=syn
+TASK=imp
 
 vpath %.zip downloads
 
@@ -86,7 +86,8 @@ VERILOGS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFI
 VERILOGS_TO_FILTER += examples/vivado/finish_supported_1.v
 ## Yosys abort and ISE/Vivado ignore it
 VERILOGS_TO_FILTER += examples/vivado/finish_ignored_1.v
-
+# Can't be implemented and unuseful for synthesis
+VERILOGS_TO_FILTER += examples/vivado/black_box_1.v
 
 VERILOGS := $(filter-out $(VERILOGS_TO_FILTER), $(VERILOGS))
 

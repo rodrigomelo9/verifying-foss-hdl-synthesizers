@@ -2,7 +2,7 @@
 
 Here, synthesizable examples for ISE and Vivado, provided by Xilinx, are downloaded, unzipped,
 patched (in some cases), filtered (some files with problems or duplicated are removed from the
-list) and synthesized with Yosys, ISE and Vivado.
+list) and synthesized/implemented with Yosys, ISE and Vivado.
 
 ## Instructions
 
@@ -15,15 +15,15 @@ simulator.
     * `yosys-vivado`: Yosys synthesis to use vivado as backend.
     * `ise`: synthesis using ise (xst).
     * `vivado`: synthesis using vivado.
-* The default operation is synthesis (`syn`) but can be changed to implementation (`imp`) using:
-`make TASK=imp <TARGET>`
+* The default operation is implementation (`imp`) but can be changed to synthesis (`syn`) using:
+`make TASK=syn <TARGET>`
 
 ## Remarks
 
 * Unsupported non-standard things in Yosys (vs ISE/Vivado):
     * Specification of parameters without parenthesis in module instantiation.
     * Use of semicolon after an `end`/`endmodule`.
-* Several asymmetric rams which are supported by ISE are not supported by Vivado:
+* Several asymmetric TDP rams which are supported by ISE are not supported by Vivado:
     * examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_3.v
     * examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_1.v
     * examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2d.v
@@ -31,3 +31,4 @@ simulator.
     * examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_4.v
     * examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2c.v
     * examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_2.v
+* Yosys don't supports TDP rams with more than one write port.
