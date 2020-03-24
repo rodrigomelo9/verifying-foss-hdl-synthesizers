@@ -189,6 +189,10 @@ TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_
 TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_4.v
 TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2c.v
 TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_2.v
+# ISE attribute unsupported on Vivado
+## CRITICAL WARNING: [Synth 8-5397] Deprecated attribute BUFFER_TYPE found on pin clk.
+## Please use IO_BUFFER_TYPE or CLOCK_BUFFER_TYPE. BUFFER_TYPE will not be supported in future releases.
+TO_FILTER_IN_VIVADO += examples/ise/Verilog_Language_Support/attributes/vlgattrib2001_1.v
 
 
 VERILOGS_FOR_VIVADO  = $(filter-out $(TO_FILTER_IN_VIVADO), $(VERILOGS))
