@@ -1,0 +1,11 @@
+--- examples/ise/HDL_Coding_Techniques/rams/rams_20c.vhd	2009-11-20 14:45:14.000000000 -0300
++++ support/rams_20c.vhd	2020-03-26 14:04:16.453933637 -0300
+@@ -22,7 +22,7 @@
+     type RamType is array(0 to 63) of bit_vector(31 downto 0);    
+ 
+     impure function InitRamFromFile (RamFileName : in string) return RamType is                                                   
+-        FILE RamFile         : text is in RamFileName;                       
++        FILE RamFile         : text is RamFileName;                       
+         variable RamFileLine : line;                                 
+         variable RAM         : RamType;                                      
+     begin                                                        

@@ -1,0 +1,20 @@
+--- examples/ise/HDL_Coding_Techniques/rams/ram_protected_sharedvar.vhd	2010-07-15 18:05:22.000000000 -0300
++++ support/ram_protected_sharedvar.vhd	2020-03-26 14:26:13.650792563 -0300
+@@ -96,7 +96,7 @@
+     begin
+         if rising_edge(clka) then
+             if ENA = '1' then
+-                doa <= myram.read(addra);
++                doa <= RAM.read(addra);
+                 if WEA = '1' then
+                   RAM.write(addra, dia);
+                 end if;
+@@ -108,7 +108,7 @@
+     begin
+         if rising_edge(clkb) then
+             if ENB = '1' then
+-                dob <= myram.read(addrb);
++                dob <= RAM.read(addrb);
+                 if WEB = '1' then
+                   RAM.write(addrb, dib);
+                 end if;

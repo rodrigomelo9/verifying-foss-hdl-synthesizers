@@ -1,0 +1,11 @@
+--- examples/ise/VHDL_Language_Support/file_type_support/fileread_endfile.vhd	2009-10-09 10:04:52.000000000 -0300
++++ support/fileread_endfile.vhd	2020-03-26 14:04:05.125727765 -0300
+@@ -22,7 +22,7 @@
+     type RamType is array(0 to 63) of bit_vector(31 downto 0);    
+ 
+     impure function InitRamFromFile (RamFileName : in string) return RamType is
+-        FILE RamFile         : text is in RamFileName;                       
++        FILE RamFile         : text is RamFileName;                       
+         variable RamFileLine : line;                                 
+         variable RAM         : RamType;
+ 	variable I           : integer;                                   

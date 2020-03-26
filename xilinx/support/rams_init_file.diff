@@ -1,0 +1,11 @@
+--- examples/vivado/rams_init_file.vhd	2018-03-21 09:50:34.000000000 -0300
++++ support/rams_init_file.vhd	2020-03-26 14:04:27.742138801 -0300
+@@ -20,7 +20,7 @@
+  type RamType is array (0 to 63) of bit_vector(31 downto 0);
+ 
+  impure function InitRamFromFile(RamFileName : in string) return RamType is
+-  FILE RamFile : text is in RamFileName;
++  FILE RamFile : text is RamFileName;
+   variable RamFileLine : line;
+   variable RAM         : RamType;
+  begin
