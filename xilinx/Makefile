@@ -103,7 +103,10 @@ support/blackboxes.v \
 
 iverilog:
 	@echo "Analysing $(NO_OF_VERILOGS) files with iVerilog"
-	@$(foreach FILE, $(VERILOGS), $(shell iverilog $(IVERILOG_EXTRA) $(FILE)))
+	@$(foreach FILE, $(VERILOGS), \
+		echo "* $(FILE)"; \
+		iverilog $(IVERILOG_EXTRA) $(FILE); \
+	)
 	@echo "DONE"
 
 #
@@ -229,3 +232,41 @@ clean:
 
 clean-all: clean
 	rm -fr downloads examples reports
+
+###############################################################################
+# ghdlsynt                                                                    #
+###############################################################################
+
+DOCKER_CMD = docker run --rm -t -v ${CURDIR}:/src -w /src ghdl/synth:beta
+
+#
+# Collecting VHDL files
+#
+
+VHDLS  = $(shell find examples/ -type f -name '*.vhd')
+
+# Filtering Files with ghdl complains
+VHDLS_TO_FILTER  =
+
+VHDLS := $(filter-out $(VHDLS_TO_FILTER), $(VHDLS))
+
+NO_OF_VHDLS = $(words $(VHDLS))
+
+#
+# ghdl analysis
+#
+
+GHDL_EXTRA = \
+-fsynopsys -fexplicit -frelaxed --std=08 --warn-no-hide --warn-no-shared
+
+ghdl:
+	@echo "Analysing $(NO_OF_VHDLS) files with ghdl"
+	@$(foreach FILE, $(VHDLS), \
+		echo "* $(FILE)"; \
+		$(DOCKER_CMD) ghdl -s $(GHDL_EXTRA) $(FILE); \
+	)
+	@echo "DONE"
+
+#
+# ghdlsynt
+#
