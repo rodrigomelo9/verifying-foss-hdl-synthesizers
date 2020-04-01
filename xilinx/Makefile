@@ -323,7 +323,7 @@ GHDL_EXTRA = \
 ghdl:
 	@mkdir -p temp/ghdl
 	@echo "Analysing $(NO_OF_VHDLS) files with ghdl"
-	@$(DOCKER_CMD) ghdl -a --work=unisim support/blackboxes.vhd
+	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_EXTRA) support/blackboxes.vhd
 	@$(foreach FILE, $(VHDLS), \
 		echo "* $(FILE)"; \
 		$(DOCKER_CMD) ghdl -a $(GHDL_EXTRA) $(FILE); \
