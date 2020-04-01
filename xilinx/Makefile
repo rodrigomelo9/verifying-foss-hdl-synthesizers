@@ -245,8 +245,6 @@ clean-all: clean
 # ghdlsynt                                                                    #
 ###############################################################################
 
-DOCKER_CMD = docker run --rm -t -v ${CURDIR}:/src -w /src ghdl/synth:beta
-
 #
 # Collecting VHDL files
 #
@@ -314,6 +312,14 @@ VHDLS := $(filter-out $(VHDLS_TO_FILTER), $(VHDLS))
 NO_OF_VHDLS = $(words $(VHDLS))
 
 #
+# Docker
+#
+
+DOCKER_CMD = $(command -v winpty) docker run --rm -it -v /$(CURDIR)/..://wrk -w //wrk/xilinx ghdl/synth:beta
+
+#docker run --rm -t -v ${CURDIR}:/src -w /src ghdl/synth:beta
+
+#
 # ghdl analysis
 #
 
@@ -333,3 +339,13 @@ ghdl:
 #
 # ghdlsynt
 #
+
+gosys:
+	@mkdir -p temp/$@ reports/$@
+	@echo "Analysing $(NO_OF_VHDLS) files with ghdl-yosys-plugin"
+	@$(foreach FILE, $(VHDLS), \
+		echo "* $(FILE)"; \
+		$(DOCKER_CMD) python3 ../helpers/gosys.py -o temp/gosys $(FILE)  > \
+		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
+	)
+	@echo "DONE"
