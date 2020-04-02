@@ -13,10 +13,8 @@ all: iverilog
 #
 
 examples:
-	wget -P downloads -c https://github.com/laforest/FPGADesignElements/archive/master.zip
-	mkdir -p examples
-	unzip -o -d examples downloads/master.zip
-	mv examples/*/* examples
+	git clone git@github.com:laforest/FPGADesignElements.git examples
+	sed -i -E "s/parameter\s+WORD_WIDTH\s*=\s*0/parameter WORD_WIDTH = 8/g" examples/*.v
 
 #
 # Collecting Verilog files
@@ -60,4 +58,4 @@ clean:
 	rm -fr a.out temp
 
 clean-all: clean
-	rm -fr downloads examples reports
+	rm -fr examples reports
