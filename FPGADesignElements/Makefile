@@ -23,6 +23,14 @@ examples:
 	sed -i -E "s/parameter\s+INPUT_ADDR_BASE\s*=\s*0/parameter INPUT_ADDR_BASE = 3/g" examples/*.v
 	sed -i -E "s/parameter\s+OUTPUT_ADDR_WIDTH\s*=\s*0/parameter OUTPUT_ADDR_WIDTH = 3/g" examples/*.v
 	sed -i -E "s/parameter\s+INPUT_COUNT\s*=\s*0/parameter INPUT_COUNT = 3/g" examples/*.v
+	sed -i -E "s/parameter\s+BINARY_WIDTH\s*=\s*0/parameter BINARY_WIDTH = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+OUTPUT_WIDTH\s*=\s*0/parameter OUTPUT_WIDTH = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+OUTPUT_COUNT\s*=\s*0/parameter OUTPUT_COUNT = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+PIPE_DEPTH\s*=\s*0/parameter PIPE_DEPTH = 2/g" examples/*.v
+	sed -i -E "s/parameter\s+WORD_WIDTH_IN\s*=\s*0/parameter WORD_WIDTH_IN = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+WORD_WIDTH_OUT\s*=\s*0/parameter WORD_WIDTH_OUT = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+IMPLEMENTATION\s*=\s*\"\"/parameter IMPLEMENTATION = \"MUX\"/g" examples/*.v
+	sed -i -E "s/parameter\s+EDGE_TYPE\s*=\s*\"\"/parameter EDGE_TYPE = \"POS\"/g" examples/*.v
 
 #
 # Collecting Verilog files
