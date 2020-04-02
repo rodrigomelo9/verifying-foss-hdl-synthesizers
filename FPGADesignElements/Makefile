@@ -15,6 +15,14 @@ all: iverilog
 examples:
 	git clone git@github.com:laforest/FPGADesignElements.git examples
 	sed -i -E "s/parameter\s+WORD_WIDTH\s*=\s*0/parameter WORD_WIDTH = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+WORD_COUNT\s*=\s*0/parameter WORD_COUNT = 2/g" examples/*.v
+	sed -i -E "s/parameter\s+PULSE_LENGTH\s*=\s*0/parameter PULSE_LENGTH = 2/g" examples/*.v
+	sed -i -E "s/parameter\s+WORD_WIDTH_A\s*=\s*0/parameter WORD_WIDTH_A = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+WORD_WIDTH_B\s*=\s*0/parameter WORD_WIDTH_B = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+ADDR_WIDTH\s*=\s*0/parameter ADDR_WIDTH = 3/g" examples/*.v
+	sed -i -E "s/parameter\s+INPUT_ADDR_BASE\s*=\s*0/parameter INPUT_ADDR_BASE = 3/g" examples/*.v
+	sed -i -E "s/parameter\s+OUTPUT_ADDR_WIDTH\s*=\s*0/parameter OUTPUT_ADDR_WIDTH = 3/g" examples/*.v
+	sed -i -E "s/parameter\s+INPUT_COUNT\s*=\s*0/parameter INPUT_COUNT = 3/g" examples/*.v
 
 #
 # Collecting Verilog files
