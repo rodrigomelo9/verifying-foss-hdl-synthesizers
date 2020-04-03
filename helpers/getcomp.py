@@ -31,8 +31,6 @@ hdl = open(args.top, 'r').read()
 matches = re.findall(r'entity\s+(\w+)\s+is', hdl)
 if len(matches) > 0:
     top = matches[-1]
-    if len(matches) > 1:
-        print('WARNING: more than one top-level found, last selected.')
 else:
     sys.exit('ERROR: top-level not found.')
 
