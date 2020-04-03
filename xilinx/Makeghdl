@@ -52,6 +52,9 @@ VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/PolyDecF
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/TestPkg.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/PolyIntrpFilter_tb.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/TestPkg.vhd
+# Filtering packages
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/PolyDecFilterPkg.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/PolyIntrpFilterPkg.vhd
 # Filtering included components
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymSystFIR/DelayLine.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
@@ -65,6 +68,9 @@ VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/Fi
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR/FilterStage.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/FilterStage.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/FilterStage.vhd
+# Can't be implemented and unuseful for synthesis
+VHDLS_TO_FILTER += examples/vivado/black_box_1.vhd
+
 
 VHDLS := $(filter-out $(VHDLS_TO_FILTER), $(VHDLS))
 
@@ -83,13 +89,18 @@ DOCKER_CMD = $(command -v winpty) docker run --rm -it -v /$(CURDIR)/..://wrk -w 
 GHDL_EXTRA = \
 -fsynopsys -fexplicit -frelaxed --warn-no-hide --warn-no-shared --warn-no-library -Ptemp/ghdl --std=08 --workdir=temp/ghdl
 
+GETCOMP = python3 ../helpers/getcomp.py
+
 ghdl:
 	@mkdir -p temp/ghdl
 	@echo "Analysing $(NO_OF_VHDLS) files with ghdl"
 	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_EXTRA) support/blackboxes.vhd
 	@$(foreach FILE, $(VHDLS), \
 		echo "* $(FILE)"; \
+		echo "  * Analysis"; \
 		$(DOCKER_CMD) ghdl -a $(GHDL_EXTRA) $(FILE); \
+		echo "  * Elaboration"; \
+		$(DOCKER_CMD) ghdl -e $(GHDL_EXTRA) $(shell $(GETCOMP) $(FILE)); \
 	)
 	@echo "DONE"
 
