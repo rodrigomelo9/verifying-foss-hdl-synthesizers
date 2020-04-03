@@ -33,6 +33,8 @@ examples: xstug_examples.zip ug901-vivado-synthesis-examples.zip
 	patch examples/ise/VHDL_Language_Support/file_type_support/fileread_endfile.vhd                  < support/fileread_endfile.diff
 	patch examples/ise/HDL_Coding_Techniques/rams/rams_20c.vhd                                       < support/rams_20c.diff
 	patch examples/ise/HDL_Coding_Techniques/rams/ram_protected_sharedvar.vhd                        < support/ram_protected_sharedvar.diff
+	patch examples/ise/VHDL_Language_Support/nonlrm_supported/nonlrm_bufferout.vhd                   < support/nonlrm_bufferout.diff
+	patch examples/ise/VHDL_Language_Support/nonlrm_supported/nonlrm_outbuffer.vhd                   < support/nonlrm_outbuffer.diff
 	patch examples/vivado/rams_init_file.vhd                                                         < support/rams_init_file.diff
 	patch examples/vivado/roms_1.vhd                                                                 < support/roms_1.diff
 
@@ -40,7 +42,7 @@ examples: xstug_examples.zip ug901-vivado-synthesis-examples.zip
 # Collecting Verilog files
 #
 
-VERILOGS  = $(shell find examples/ -type f -name '*.v')
+VERILOGS  = $(shell find examples/ -type f -name '*.v' | sort)
 
 
 # Filtering Files with iverilog complains

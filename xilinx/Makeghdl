@@ -9,7 +9,7 @@ all: ghdl
 # Collecting VHDL files
 #
 
-VHDLS  = $(shell find examples/ -type f -name '*.vhd')
+VHDLS  = $(shell find examples/ -type f -name '*.vhd' | sort)
 
 # Filtering duplicated Files
 ## find -name '*.vhd' -type f -printf '%p %f\n' | sort -t ' ' -k 2,2 | uniq -f 1 --all-repeated=separate | cut -d' ' -f1
@@ -56,18 +56,33 @@ VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/TestPk
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/PolyDecFilterPkg.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/PolyIntrpFilterPkg.vhd
 # Filtering included components
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymSystFIR/DelayLine.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR/DelayLine.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/DelayLine.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/DelayLine.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymSystFIR/FilterStage.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymSystFIR/DelayLine.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR/FilterStage.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymSystFIR/FilterStage.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/CoefRom.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/DataDelay.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/CoefRom.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/DataDelay.vhd
+# Some descriptions of two complex design, where instantiated modules whith same name but
+# slightly different ports than others, were used.
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/DelayLine.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/FilterStage.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/PolyDecFilterPkg.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/PolyDecFilter.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/AddrDelay.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/AddrGen.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/CoefRom.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/DataDelay.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/DelayLine.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/FilterStage.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/PolyIntrpFilterPkg.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/PolyIntrpFilter.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/SyncDelay.vhd
 # Can't be implemented and unuseful for synthesis
 VHDLS_TO_FILTER += examples/vivado/black_box_1.vhd
 
@@ -86,21 +101,25 @@ DOCKER_CMD = $(command -v winpty) docker run --rm -it -v /$(CURDIR)/..://wrk -w 
 # ghdl analysis
 #
 
-GHDL_EXTRA = \
--fsynopsys -fexplicit -frelaxed --warn-no-hide --warn-no-shared --warn-no-library -Ptemp/ghdl --std=08 --workdir=temp/ghdl
+GHDL_FLAGS = \
+-fsynopsys -fexplicit -frelaxed \
+--warn-no-hide --warn-no-shared --warn-no-library \
+-Ptemp/ghdl --std=08 --workdir=temp/ghdl
 
 GETCOMP = python3 ../helpers/getcomp.py
 
 ghdl:
 	@mkdir -p temp/ghdl
 	@echo "Analysing $(NO_OF_VHDLS) files with ghdl"
-	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_EXTRA) support/blackboxes.vhd
+	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
+	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
+	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
 	@$(foreach FILE, $(VHDLS), \
 		echo "* $(FILE)"; \
 		echo "  * Analysis"; \
-		$(DOCKER_CMD) ghdl -a $(GHDL_EXTRA) $(FILE); \
+		$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) $(FILE); \
 		echo "  * Elaboration"; \
-		$(DOCKER_CMD) ghdl -e $(GHDL_EXTRA) $(shell $(GETCOMP) $(FILE)); \
+		$(DOCKER_CMD) ghdl -e $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)); \
 	)
 	@echo "DONE"
 
