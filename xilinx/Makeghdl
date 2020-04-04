@@ -109,11 +109,11 @@ GHDL_FLAGS = \
 GETCOMP = python3 ../helpers/getcomp.py
 
 ghdl:
-	@mkdir -p temp/ghdl
-	@echo "Analysing $(NO_OF_VHDLS) files with ghdl"
+	@mkdir -p temp/$@
 	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
 	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
 	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
+	@echo "Analysing $(NO_OF_VHDLS) files with ghdl"
 	@$(foreach FILE, $(VHDLS), \
 		echo "* $(FILE)"; \
 		echo "  * Analysis"; \
@@ -123,17 +123,35 @@ ghdl:
 	)
 	@echo "DONE"
 
-#
-# ghdl-yosys-plugin
-#
+ghdl-synth:
+	@mkdir -p temp/$@ reports/$@
+	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
+	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
+	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
+	@echo "Analysing $(NO_OF_VHDLS) files with ghdl --synth"
+	@$(foreach FILE, $(VHDLS), \
+		echo "* $(FILE)"; \
+		echo "  * Analysis"; \
+		$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) $(FILE); \
+		echo "  * Synthesis"; \
+		$(DOCKER_CMD) ghdl --synth $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)) > \
+		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
+	)
+	@echo "DONE"
 
-gosys:
-	@mkdir -p temp/ghdl/$@ reports/ghdl/$@
+ghdl-yosys:
+	@mkdir -p temp/$@ reports/$@
+	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
+	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
+	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
 	@echo "Analysing $(NO_OF_VHDLS) files with ghdl-yosys-plugin"
 	@$(foreach FILE, $(VHDLS), \
 		echo "* $(FILE)"; \
-		$(DOCKER_CMD) python3 ../helpers/gosys.py -o temp/ghdl/gosys $(FILE)  > \
-		$(addprefix reports/ghdl/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
+		echo "  * Analysis"; \
+		$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) $(FILE); \
+		echo "  * Elaboration"; \
+		$(DOCKER_CMD) yosys -Q -m ghdl -p 'ghdl $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)); synth_xilinx -family xc7; write_edif -pvector bra yosys.edif' > \
+		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
 
