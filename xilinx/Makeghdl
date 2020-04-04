@@ -123,13 +123,28 @@ ghdl:
 	)
 	@echo "DONE"
 
+# Filtering Files with GHDL synthesis complains
+## ERROR: latch infered for net
+TO_FILTER_IN_GHDL  = examples/vivado/latches.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_cp.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_0.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_1.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_2.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_3.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/multiplexers/multiplexers_4.vhd
+
+
+VHDLS_FOR_GHDL = $(filter-out $(TO_FILTER_IN_GHDL), $(VHDLS))
+
+NO_OF_VHDLS_FOR_GHDL = $(words $(VHDLS_FOR_GHDL))
+
 ghdl-synth:
 	@mkdir -p temp/$@ reports/$@
 	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
 	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
 	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
-	@echo "Analysing $(NO_OF_VHDLS) files with ghdl --synth"
-	@$(foreach FILE, $(VHDLS), \
+	@echo "Analysing $(NO_OF_VHDLS_FOR_GHDL) files with ghdl --synth"
+	@$(foreach FILE, $(VHDLS_FOR_GHDL), \
 		echo "* $(FILE)"; \
 		echo "  * Analysis"; \
 		$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) $(FILE); \
@@ -144,8 +159,8 @@ ghdl-yosys:
 	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
 	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
 	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
-	@echo "Analysing $(NO_OF_VHDLS) files with ghdl-yosys-plugin"
-	@$(foreach FILE, $(VHDLS), \
+	@echo "Analysing $(NO_OF_VHDLS_FOR_GHDL) files with ghdl-yosys-plugin"
+	@$(foreach FILE, $(VHDLS_FOR_GHDL), \
 		echo "* $(FILE)"; \
 		echo "  * Analysis"; \
 		$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) $(FILE); \
@@ -178,6 +193,12 @@ VHDLS_FOR_ISE = $(filter-out $(TO_FILTER_IN_ISE), $(VHDLS))
 
 NO_OF_VHDLS_FOR_ISE = $(words $(VHDLS_FOR_ISE))
 
+
+GENERAL_DEPS = \
+-f support/blackboxes.vhd \
+-f examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd \
+-f examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
+
 ise:
 	mkdir -p reports/ghdl/$@
 	@echo "Analysing $(NO_OF_VHDLS_FOR_ISE) files with $@"
@@ -189,7 +210,14 @@ ise:
 	@echo "DONE"
 
 # Filtering Files with Vivado complains
-TO_FILTER_IN_VIVADO  =
+## Unsupported Asymmetric RAM pattern
+TO_FILTER_IN_VIVADO  = examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2d.vhd
+## illegal syntax for subtype indication
+TO_FILTER_IN_VIVADO += examples/vivado/rams_sp_3d.vhd
+TO_FILTER_IN_VIVADO += examples/vivado/rams_sdp_3d.vhd
+## syntax error near protected
+TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/ram_protected_sharedvar.vhd
+
 
 VHDLS_FOR_VIVADO  = $(filter-out $(TO_FILTER_IN_VIVADO), $(VHDLS))
 
@@ -200,7 +228,7 @@ vivado:
 	@echo "Analysing $(NO_OF_VHDLS_FOR_VIVADO) files with $@"
 	@$(foreach FILE, $(VHDLS_FOR_VIVADO), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/ghdl/vivado --tool $@ --run $(TASK) $(FILE) > \
+		fpga-hdl2bit --outdir temp/ghdl/vivado --tool $@ --run $(TASK) $(GENERAL_DEPS) $(FILE) > \
 		$(addprefix reports/ghdl/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"

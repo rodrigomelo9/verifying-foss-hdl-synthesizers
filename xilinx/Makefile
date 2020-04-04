@@ -229,8 +229,8 @@ vivado:
 report-errors:
 	@$(foreach DIR,$(wildcard reports/*), \
 		echo "*\n* $(DIR)\n*"; \
-		grep -rin "ERROR:" $(DIR); \
-		grep -rin "Aborted" $(DIR); \
+		grep -rnE "ERROR|error:" $(DIR); \
+		grep -rin "Aborted"      $(DIR); \
 	)
 
 #
