@@ -44,6 +44,35 @@ VERILOGS := $(filter-out $(VERILOGS_TO_FILTER), $(VERILOGS))
 
 NO_OF_VERILOGS = $(words $(VERILOGS))
 
+DEPS_TO_FILTER = \
+examples/Adder_Subtractor_Binary.v \
+examples/Address_Decoder_Behavioural.v \
+examples/Annuller.v \
+examples/Arithmetic_Predicates_Binary.v \
+examples/Binary_to_One_Hot.v \
+examples/Bit_Reducer.v \
+examples/Bit_Shifter.v \
+examples/Bitmask_Isolate_Rightmost_1_Bit.v \
+examples/Bitmask_Thermometer_to_Rightmost_1_Bit.v \
+examples/CarryIn_Binary.v \
+examples/Counter_Binary.v \
+examples/Dyadic_Boolean_Operator.v \
+examples/Hamming_Distance.v \
+examples/Logarithm_of_Powers_of_Two.v \
+examples/Multiplexer_Binary_Behavioural.v \
+examples/Multiplexer_One_Hot.v \
+examples/Multiplexer_Bitwise_2to1.v \
+examples/Number_of_Trailing_Zeros.v \
+examples/Population_Count.v \
+examples/Priority_Arbiter.v \
+examples/Register.v \
+examples/Register_Pipeline.v \
+examples/Word_Reducer.v \
+examples/Word_Reverser.v
+
+VERILOGS := $(filter-out $(DEPS_TO_FILTER), $(VERILOGS))
+DEPS = $(addprefix -f , $(DEPS_TO_FILTER))
+
 #
 # Verify
 #
@@ -75,7 +104,7 @@ yosys-vivado:
 	@echo "Analysing $(NO_OF_VERILOGS) files with $@"
 	@$(foreach FILE, $(VERILOGS), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/yosys --tool $@ --run $(TASK) $(FILE) > \
+		fpga-hdl2bit --outdir temp/yosys --tool $@ --run $(TASK) $(DEPS) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
@@ -89,7 +118,7 @@ ise vivado quartus:
 	@echo "Analysing $(NO_OF_VERILOGS) files with $@"
 	@$(foreach FILE, $(VERILOGS), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/$@ --tool $@ --run $(TASK) $(FILE) > \
+		fpga-hdl2bit --outdir temp/$@ --tool $@ --run $(TASK) $(DEPS) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
