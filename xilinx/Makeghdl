@@ -196,7 +196,7 @@ ise-vhdl:
 	@echo "Analysing $(NO_OF_VHDLS_FOR_ISE) files with $@"
 	@$(foreach FILE, $(VHDLS_FOR_ISE), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/ghdl/ise --tool $@ --run $(TASK) $(FILE) > \
+		fpga-hdl2bit --outdir temp/$@ --tool ise --run $(TASK) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
@@ -220,7 +220,7 @@ vivado-vhdl:
 	@echo "Analysing $(NO_OF_VHDLS_FOR_VIVADO) files with $@"
 	@$(foreach FILE, $(VHDLS_FOR_VIVADO), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/ghdl/vivado --tool $@ --run $(TASK) $(GENERAL_DEPS) $(FILE) > \
+		fpga-hdl2bit --outdir temp/$@ --tool vivado --run $(TASK) $(GENERAL_DEPS) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"

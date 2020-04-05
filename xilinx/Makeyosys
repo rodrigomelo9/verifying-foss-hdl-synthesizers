@@ -122,7 +122,7 @@ yosys yosys-ise yosys-vivado:
 	@echo "Analysing $(NO_OF_VERILOGS_FOR_YOSYS) files with $@"
 	@$(foreach FILE, $(VERILOGS_FOR_YOSYS), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/yosys --tool $@ $(YOSYS_DEPS) --run $(TASK) $(FILE) > \
+		fpga-hdl2bit --outdir temp/$@ --tool $@ $(YOSYS_DEPS) --run $(TASK) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
@@ -150,7 +150,7 @@ ise-verilog:
 	@echo "Analysing $(NO_OF_VERILOGS_FOR_ISE) files with $@"
 	@$(foreach FILE, $(VERILOGS_FOR_ISE), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/ise --tool $@ $(GENERAL_DEPS) --run $(TASK) $(FILE) > \
+		fpga-hdl2bit --outdir temp/$@ --tool ise $(GENERAL_DEPS) --run $(TASK) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
@@ -179,7 +179,7 @@ vivado-verilog:
 	@echo "Analysing $(NO_OF_VERILOGS_FOR_VIVADO) files with $@"
 	@$(foreach FILE, $(VERILOGS_FOR_VIVADO), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/vivado --tool $@ $(GENERAL_DEPS) --run $(TASK) $(FILE) > \
+		fpga-hdl2bit --outdir temp/$@ --tool vivado $(GENERAL_DEPS) --run $(TASK) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
