@@ -1,10 +1,5 @@
 #!/usr/bin/make
 
-ISE=/opt/Xilinx/ise
-TASK=imp
-
-all: ghdl
-
 #
 # Collecting VHDL files
 #
@@ -108,18 +103,15 @@ GHDL_FLAGS = \
 
 GETCOMP = python3 ../helpers/getcomp.py
 
-ghdl:
-	@mkdir -p temp/$@
+verify-vhdl:
+	@mkdir -p temp/ghdl
 	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
 	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
 	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
-	@echo "Analysing $(NO_OF_VHDLS) files with ghdl"
+	@echo "Checking the syntax of $(NO_OF_VHDLS) files with ghdl"
 	@$(foreach FILE, $(VHDLS), \
 		echo "* $(FILE)"; \
-		echo "  * Analysis"; \
-		$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) $(FILE); \
-		echo "  * Elaboration"; \
-		$(DOCKER_CMD) ghdl -e $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)); \
+		$(DOCKER_CMD) ghdl -s $(GHDL_FLAGS) $(FILE); \
 	)
 	@echo "DONE"
 
@@ -138,8 +130,8 @@ VHDLS_FOR_GHDL = $(filter-out $(TO_FILTER_IN_GHDL), $(VHDLS))
 
 NO_OF_VHDLS_FOR_GHDL = $(words $(VHDLS_FOR_GHDL))
 
-ghdl-synth:
-	@mkdir -p temp/$@ reports/$@
+ghdl:
+	@mkdir -p temp/ghdl reports/$@
 	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
 	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
 	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
@@ -155,7 +147,7 @@ ghdl-synth:
 	@echo "DONE"
 
 ghdl-yosys:
-	@mkdir -p temp/$@ reports/$@
+	@mkdir -p temp/ghdl reports/$@
 	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
 	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
 	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
@@ -199,13 +191,13 @@ GENERAL_DEPS = \
 -f examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd \
 -f examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
 
-ise:
-	mkdir -p reports/ghdl/$@
+ise-vhdl:
+	mkdir -p reports/$@
 	@echo "Analysing $(NO_OF_VHDLS_FOR_ISE) files with $@"
 	@$(foreach FILE, $(VHDLS_FOR_ISE), \
 		echo "* Analizyng $(FILE)"; \
 		fpga-hdl2bit --outdir temp/ghdl/ise --tool $@ --run $(TASK) $(FILE) > \
-		$(addprefix reports/ghdl/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
+		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
 
@@ -223,12 +215,12 @@ VHDLS_FOR_VIVADO  = $(filter-out $(TO_FILTER_IN_VIVADO), $(VHDLS))
 
 NO_OF_VHDLS_FOR_VIVADO = $(words $(VHDLS_FOR_VIVADO))
 
-vivado:
-	mkdir -p reports/ghdl/$@
+vivado-vhdl:
+	mkdir -p reports/$@
 	@echo "Analysing $(NO_OF_VHDLS_FOR_VIVADO) files with $@"
 	@$(foreach FILE, $(VHDLS_FOR_VIVADO), \
 		echo "* Analizyng $(FILE)"; \
 		fpga-hdl2bit --outdir temp/ghdl/vivado --tool $@ --run $(TASK) $(GENERAL_DEPS) $(FILE) > \
-		$(addprefix reports/ghdl/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
+		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"

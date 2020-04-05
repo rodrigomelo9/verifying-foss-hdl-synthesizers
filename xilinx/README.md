@@ -1,4 +1,4 @@
-# Yosys vs the Xilinx tools (ISE/Vivado)
+# Yosys and GHDL vs the Xilinx tools (ISE/Vivado)
 
 Here, synthesizable examples for ISE and Vivado, provided by Xilinx, are downloaded, unzipped,
 patched (in some cases), filtered (some files with problems or duplicated are removed from the
@@ -6,19 +6,26 @@ list) and synthesized/implemented with Yosys, ISE and Vivado.
 
 ## Instructions
 
-* The first time (or when there is a message about examples not found), run: `make examples`
-* With `make` or `make iverilog` the list of selected Verilog files are analyzed with the iverilog
-simulator.
-* The targets for synthesis (`make <TARGET>`) are:
-    * `yosys`: generic Yosys synthesis.
-    * `yosys-ise`: Yosys synthesis to use ise as backend.
-    * `yosys-vivado`: Yosys synthesis to use vivado as backend.
-    * `ise`: synthesis using ise (xst).
-    * `vivado`: synthesis using vivado.
-* The default operation is implementation (`imp`) but can be changed to synthesis (`syn`) using:
-`make TASK=syn <TARGET>`
+* Prepare the examples with `make` or `make prepare`.
+* Verify the examples with `make verify`, or:
+  * `make verify-verilog` for Verilog files.
+  * `make verify-vhdl` for VHDL files.
+* Run synthesis with `make <TARGET>`, where `<TARGET>` can be:
+  * `yosys`: generic Yosys synthesis.
+  * `yosys-ise`: Yosis synthesis with ISE as backend.
+  * `yosys-vivado`: Yosis synthesis with Vivado as backend.
+  * `ise-verilog`: synthesis with ISE (xst).
+  * `vivado-verilog`: synthesis with Vivado.
+  * `ghdl-synth`: generic GHDL synthesis.
+  * `ghdl-yosys`: synthesis using the ghdl-yosys-plugin.
+  * `ise-vhdl`: synthesis with ISE (xst).
+  * `vivado-vhdl`: synthesis with Vivado.
+* Report erros with `make report-erros` (there must be reports).
+* Remove with `make clean` and `make clean-all`.
+* The default operation is implementation (`imp`) but can be changed to synthesis (`syn`) using
+`make TASK=syn <TARGET>`.
 
-## Remarks
+## Yosys remarks
 
 * Unsupported non-standard things in Yosys (vs ISE/Vivado):
     * Specification of parameters without parenthesis in module instantiation.
@@ -33,24 +40,6 @@ simulator.
     * examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_2.v
 * Yosys don't supports TDP rams with more than one write port.
 
-# ghdl-yosys-plugin
+# GHDL remarks
 
-An additional makefile, called *Makeghdl*, is provided to test using
-[this](https://github.com/ghdl/ghdl-yosys-plugin) plugin.
-Targets like `examples`, `report-errors`, `clean` and `clean-all` are still solved by *Makefile*.
-
-## Instructions
-
-* The examples are still download with *Makefile*, running: `make examples`
-* With `make -f Makeghdl` or `make -f Makeghdl ghdl` the list of selected VHDL files are analyzed
-with the GHDL simulator.
-* The targets for synthesis (`make -f Makeghdl <TARGET>`) are:
-    * `gosys`: ghdl-yosys plugin using ISE as backend.
-    * `ise`: synthesis using ise (xst).
-* The default operation is implementation (`imp`) but can be changed to synthesis (`syn`) using:
-`make -f Makeghdl TASK=syn <TARGET>`
-
-## Remarks
-
-* The employment of the plugin is solved using a Python script (`../helpers/gosys.py`).
 * The script is run using the Docker image provided by the plugin project.
