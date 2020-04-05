@@ -1,0 +1,20 @@
+--- examples/ise/VHDL_Language_Support/nonlrm_supported/nonlrm_bufferout.vhd	2009-10-09 14:35:42.000000000 -0300
++++ support/nonlrm_bufferout.vhd	2020-04-03 16:24:21.353112426 -0300
+@@ -40,7 +40,7 @@
+ end top;
+ 
+ architecture behavioral of top is
+-  component sub is
++  component nonlrm_bufferout is
+     port (
+       clk : in     std_logic;
+       A   : in     std_logic;
+@@ -48,7 +48,7 @@
+       O   : buffer std_logic);
+   end component;
+ begin
+-  isub : sub
++  isub : nonlrm_bufferout
+     port map (
+       clk => clk,
+       A   => A,

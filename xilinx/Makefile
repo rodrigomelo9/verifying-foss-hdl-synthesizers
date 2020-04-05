@@ -33,6 +33,8 @@ examples: xstug_examples.zip ug901-vivado-synthesis-examples.zip
 	patch examples/ise/VHDL_Language_Support/file_type_support/fileread_endfile.vhd                  < support/fileread_endfile.diff
 	patch examples/ise/HDL_Coding_Techniques/rams/rams_20c.vhd                                       < support/rams_20c.diff
 	patch examples/ise/HDL_Coding_Techniques/rams/ram_protected_sharedvar.vhd                        < support/ram_protected_sharedvar.diff
+	patch examples/ise/VHDL_Language_Support/nonlrm_supported/nonlrm_bufferout.vhd                   < support/nonlrm_bufferout.diff
+	patch examples/ise/VHDL_Language_Support/nonlrm_supported/nonlrm_outbuffer.vhd                   < support/nonlrm_outbuffer.diff
 	patch examples/vivado/rams_init_file.vhd                                                         < support/rams_init_file.diff
 	patch examples/vivado/roms_1.vhd                                                                 < support/roms_1.diff
 
@@ -40,7 +42,7 @@ examples: xstug_examples.zip ug901-vivado-synthesis-examples.zip
 # Collecting Verilog files
 #
 
-VERILOGS  = $(shell find examples/ -type f -name '*.v')
+VERILOGS  = $(shell find examples/ -type f -name '*.v' | sort)
 
 
 # Filtering Files with iverilog complains
@@ -227,8 +229,8 @@ vivado:
 report-errors:
 	@$(foreach DIR,$(wildcard reports/*), \
 		echo "*\n* $(DIR)\n*"; \
-		grep -rin "ERROR:" $(DIR); \
-		grep -rin "Aborted" $(DIR); \
+		grep -rnE "ERROR|error:" $(DIR); \
+		grep -rin "Aborted"      $(DIR); \
 	)
 
 #
@@ -240,96 +242,3 @@ clean:
 
 clean-all: clean
 	rm -fr downloads examples reports
-
-###############################################################################
-# ghdlsynt                                                                    #
-###############################################################################
-
-DOCKER_CMD = docker run --rm -t -v ${CURDIR}:/src -w /src ghdl/synth:beta
-
-#
-# Collecting VHDL files
-#
-
-VHDLS  = $(shell find examples/ -type f -name '*.vhd')
-
-# Filtering duplicated Files
-## find -name '*.vhd' -type f -printf '%p %f\n' | sort -t ' ' -k 2,2 | uniq -f 1 --all-repeated=separate | cut -d' ' -f1
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/AddrDelay.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/DataDelay.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/black_box/black_box_1.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/rams/bytewrite_ram_1b.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/combinatorial/concurrent_conditional_assignment.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/combinatorial/concurrent_selected_assignment.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dynamic_shift_registers/dynamic_shift_registers_1.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/file_type_support/filewrite_explicitopen.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/file_type_support/filewrite_implicitopen.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/combinatorial/for_generate.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/combinatorial/for_loop.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/functions_procedures/function_package_1.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/generics/generics_1.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/combinatorial/if_for_generate.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/initial/initial_1.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/instantiation/instantiation_recursive.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/instantiation/instantiation_simple.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/functions_procedures/procedure_package_1.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/registers/registers_1.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/shift_registers/shift_registers_0.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/shift_registers/shift_registers_1.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/signals_variables/signal_in_process.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/tristates/tristates_1.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/tristates/tristates_2.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/tristates/tristates_3.vhd
-VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/signals_variables/variable_in_process.vhd
-# Filtering testbenches
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/EvenSymSystFIR_tb.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/TestImpulsePkg.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/TestPkg.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/TestSinePkg.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymSystFIR/OddSymSystFIR_tb.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymSystFIR/TestImpulsePkg.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymSystFIR/TestPkg.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymSystFIR/TestSinePkg.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/PolyDecFilter_tb.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/TestPkg.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/PolyIntrpFilter_tb.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/TestPkg.vhd
-# Filtering included components
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymSystFIR/DelayLine.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR/DelayLine.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/DelayLine.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/DelayLine.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymSystFIR/FilterStage.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR/FilterStage.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyDecFilter/FilterStage.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/FilterStage.vhd
-
-
-VHDLS := $(filter-out $(VHDLS_TO_FILTER), $(VHDLS))
-
-NO_OF_VHDLS = $(words $(VHDLS))
-
-#
-# ghdl analysis
-#
-
-GHDL_EXTRA = \
--fsynopsys -fexplicit -frelaxed --warn-no-hide --warn-no-shared --warn-no-library -Ptemp/ghdl --std=08 --workdir=temp/ghdl
-
-ghdl:
-	@mkdir -p temp/ghdl
-	@echo "Analysing $(NO_OF_VHDLS) files with ghdl"
-	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_EXTRA) support/blackboxes.vhd
-	@$(foreach FILE, $(VHDLS), \
-		echo "* $(FILE)"; \
-		$(DOCKER_CMD) ghdl -a $(GHDL_EXTRA) $(FILE); \
-	)
-	@echo "DONE"
-
-#
-# ghdlsynt
-#

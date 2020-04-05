@@ -32,3 +32,25 @@ simulator.
     * examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2c.v
     * examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_2.v
 * Yosys don't supports TDP rams with more than one write port.
+
+# ghdl-yosys-plugin
+
+An additional makefile, called *Makeghdl*, is provided to test using
+[this](https://github.com/ghdl/ghdl-yosys-plugin) plugin.
+Targets like `examples`, `report-errors`, `clean` and `clean-all` are still solved by *Makefile*.
+
+## Instructions
+
+* The examples are still download with *Makefile*, running: `make examples`
+* With `make -f Makeghdl` or `make -f Makeghdl ghdl` the list of selected VHDL files are analyzed
+with the GHDL simulator.
+* The targets for synthesis (`make -f Makeghdl <TARGET>`) are:
+    * `gosys`: ghdl-yosys plugin using ISE as backend.
+    * `ise`: synthesis using ise (xst).
+* The default operation is implementation (`imp`) but can be changed to synthesis (`syn`) using:
+`make -f Makeghdl TASK=syn <TARGET>`
+
+## Remarks
+
+* The employment of the plugin is solved using a Python script (`../helpers/gosys.py`).
+* The script is run using the Docker image provided by the plugin project.
