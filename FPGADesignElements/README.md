@@ -3,10 +3,18 @@
 Here, verilog examples of this online book are downloaded and synthesized/implemented with
 Yosys/Vivado.
 
-> Now, there are several iverilog complains about *repeat may not be zero/negative*.
-
 ## Instructions
 
-* The first time (or when there is a message about examples not found), run: `make examples`
-* With `make` or `make iverilog` the list of selected Verilog files are analyzed with the iverilog
-simulator.
+* Prepare the examples with `make` or `make prepare`.
+* Verify the examples with `make verify`, or:
+  * `make iverilog`.
+  * `make verilator`.
+* Run synthesis with `make <TARGET>`, where `<TARGET>` can be:
+  * `yosys-vivado`: Yosis synthesis with Vivado as backend.
+  * `ise`: synthesis with ISE (xst).
+  * `vivado`: synthesis with Vivado.
+  * `quartus`: synthesis with Quartus.
+* Report erros with `make report-erros` (there must be reports).
+* Remove with `make clean` and `make clean-all`.
+* The default operation is implementation (`imp`) but can be changed to synthesis (`syn`) using
+`make TASK=syn <TARGET>`.

@@ -4,15 +4,13 @@ ISE=/opt/Xilinx/ise
 VIVADO=/opt/Xilinx/vivado
 TASK=imp
 
-vpath %.zip downloads
-
-all: iverilog
+all: prepare
 
 #
 # Prepare
 #
 
-examples:
+prepare:
 	git clone git@github.com:laforest/FPGADesignElements.git examples
 	sed -i -E "s/parameter\s+WORD_WIDTH\s*=\s*0/parameter WORD_WIDTH = 8/g" examples/*.v
 	sed -i -E "s/parameter\s+WORD_COUNT\s*=\s*0/parameter WORD_COUNT = 2/g" examples/*.v
@@ -36,7 +34,7 @@ examples:
 # Collecting Verilog files
 #
 
-VERILOGS  = $(shell find examples/ -type f -name '*.v')
+VERILOGS  = $(shell find examples/ -type f -name '*.v' | sort)
 
 # Filtering Files
 ## Not synthesizable
@@ -47,8 +45,10 @@ VERILOGS := $(filter-out $(VERILOGS_TO_FILTER), $(VERILOGS))
 NO_OF_VERILOGS = $(words $(VERILOGS))
 
 #
-# iVerilog analysis
+# Verify
 #
+
+verify: iverilog verilator
 
 iverilog:
 	@echo "Analysing $(NO_OF_VERILOGS) files with iVerilog"
@@ -65,6 +65,45 @@ verilator:
 		verilator --lint-only -Iexamples $(FILE); \
 	)
 	@echo "DONE"
+
+#
+# Synthesis with Yosys
+#
+
+yosys-vivado:
+	mkdir -p reports/$@
+	@echo "Analysing $(NO_OF_VERILOGS) files with $@"
+	@$(foreach FILE, $(VERILOGS), \
+		echo "* Analizyng $(FILE)"; \
+		fpga-hdl2bit --outdir temp/yosys --tool $@ --run $(TASK) $(FILE) > \
+		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
+	)
+	@echo "DONE"
+
+#
+# Synthesis with vendor tools
+#
+
+ise vivado quartus:
+	mkdir -p reports/$@
+	@echo "Analysing $(NO_OF_VERILOGS) files with $@"
+	@$(foreach FILE, $(VERILOGS), \
+		echo "* Analizyng $(FILE)"; \
+		fpga-hdl2bit --outdir temp/$@ --tool $@ --run $(TASK) $(FILE) > \
+		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
+	)
+	@echo "DONE"
+
+#
+# Report
+#
+
+report-errors:
+	@$(foreach DIR,$(wildcard reports/*), \
+		echo "*\n* $(DIR)\n*"; \
+		grep -rnE "ERROR|error:" $(DIR); \
+		grep -rin "Aborted"      $(DIR); \
+	)
 
 #
 # Clean
