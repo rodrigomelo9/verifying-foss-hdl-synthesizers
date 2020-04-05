@@ -12,6 +12,10 @@ FLAGS="-fsynopsys -fexplicit -frelaxed --std=$STD"
 
 echo "# Analysis with 'ghdl -a'"
 $DOCKER_CMD ghdl -a $FLAGS $FILE
+echo "# Elaboration with 'ghdl -e'"
+$DOCKER_CMD ghdl -e $FLAGS $NAME
+echo "# Runnig with 'ghdl -r'"
+$DOCKER_CMD ghdl -r $FLAGS $NAME
 
 echo "# Synthesis with 'ghdl --synth'"
 $DOCKER_CMD ghdl --synth $FLAGS $NAME
