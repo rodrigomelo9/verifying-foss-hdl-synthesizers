@@ -13,15 +13,15 @@
 
 ## GHDL
 * [ghdl/ghdl#1190](https://github.com/ghdl/ghdl/issues/1190)
-* [ghdl/ghdl#1193](https://github.com/ghdl/ghdl/issues/1193)
-* [ghdl/ghdl#1197](https://github.com/ghdl/ghdl/issues/1197)
-* [ghdl/ghdl#1198](https://github.com/ghdl/ghdl/issues/1198)
+* [ghdl/ghdl#1193](https://github.com/ghdl/ghdl/issues/1193) - Solved
+* [ghdl/ghdl#1197](https://github.com/ghdl/ghdl/issues/1197) - Solved
+* [ghdl/ghdl#1198](https://github.com/ghdl/ghdl/issues/1198) - Solved
 
 ## ghdl-yosys-plugin
 * [ghdl/ghdl-yosys-plugin#95](https://github.com/ghdl/ghdl-yosys-plugin/issues/95) - Solved
 * [ghdl/ghdl-yosys-plugin#99](https://github.com/ghdl/ghdl-yosys-plugin/issues/99)
-* [ghdl/ghdl-yosys-plugin#101](https://github.com/ghdl/ghdl-yosys-plugin/issues/101)
-* [ghdl/ghdl-yosys-plugin#102](https://github.com/ghdl/ghdl-yosys-plugin/issues/102)
+* [ghdl/ghdl-yosys-plugin#101](https://github.com/ghdl/ghdl-yosys-plugin/issues/101) - Solved
+* [ghdl/ghdl-yosys-plugin#102](https://github.com/ghdl/ghdl-yosys-plugin/issues/102) - Solved
 
 ## FPGADesignElements
 * [laforest/FPGADesignElements#4](https://github.com/laforest/FPGADesignElements/issues/4) - Closed (but notice added)
