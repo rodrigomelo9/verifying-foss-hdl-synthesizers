@@ -2,6 +2,7 @@
 
 ## Yosys
 * [YosysHQ/yosys#1583](https://github.com/YosysHQ/yosys/issues/1583)
+* [YosysHQ/yosys#1670](https://github.com/YosysHQ/yosys/pull/1670) - Solved (was directly a PR)
 * [YosysHQ/yosys#1799](https://github.com/YosysHQ/yosys/issues/1799)
 * [YosysHQ/yosys#1800](https://github.com/YosysHQ/yosys/issues/1800) - Closed (non-standard feature)
 * [YosysHQ/yosys#1801](https://github.com/YosysHQ/yosys/issues/1801) - Closed (repeted)
@@ -16,6 +17,10 @@
 * [ghdl/ghdl#1193](https://github.com/ghdl/ghdl/issues/1193) - Solved
 * [ghdl/ghdl#1197](https://github.com/ghdl/ghdl/issues/1197) - Solved
 * [ghdl/ghdl#1198](https://github.com/ghdl/ghdl/issues/1198) - Solved
+* [ghdl/ghdl#1207](https://github.com/ghdl/ghdl/issues/1207) - Solved
+* [ghdl/ghdl#1208](https://github.com/ghdl/ghdl/issues/1208) - Solved
+* [ghdl/ghdl#1209](https://github.com/ghdl/ghdl/issues/1209) - Solved
+* [ghdl/ghdl#1212](https://github.com/ghdl/ghdl/issues/1212) - Solved
 
 ## ghdl-yosys-plugin
 * [ghdl/ghdl-yosys-plugin#95](https://github.com/ghdl/ghdl-yosys-plugin/issues/95) - Solved
