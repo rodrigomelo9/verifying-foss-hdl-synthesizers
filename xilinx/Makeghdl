@@ -8,13 +8,19 @@ VHDLS  = $(shell find examples/ -type f -name '*.vhd' | sort)
 
 # Filtering duplicated Files
 ## find -name '*.vhd' -type f -printf '%p %f\n' | sort -t ' ' -k 2,2 | uniq -f 1 --all-repeated=separate | cut -d' ' -f1
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/black_box/black_box_1.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/AddrDelay.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/DataDelay.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/black_box/black_box_1.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dynamic_shift_registers/dynamic_shift_registers_1.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/rams/bytewrite_ram_1b.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/registers/registers_1.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/shift_registers/shift_registers_0.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/shift_registers/shift_registers_1.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/tristates/tristates_1.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/tristates/tristates_2.vhd
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/tristates/tristates_3.vhd
 VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/combinatorial/concurrent_conditional_assignment.vhd
 VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/combinatorial/concurrent_selected_assignment.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dynamic_shift_registers/dynamic_shift_registers_1.vhd
 VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/file_type_support/filewrite_explicitopen.vhd
 VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/file_type_support/filewrite_implicitopen.vhd
 VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/combinatorial/for_generate.vhd
@@ -26,14 +32,10 @@ VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/initial/initial_1.vhd
 VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/instantiation/instantiation_recursive.vhd
 VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/instantiation/instantiation_simple.vhd
 VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/functions_procedures/procedure_package_1.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/registers/registers_1.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/shift_registers/shift_registers_0.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/shift_registers/shift_registers_1.vhd
 VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/signals_variables/signal_in_process.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/tristates/tristates_1.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/tristates/tristates_2.vhd
-VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/tristates/tristates_3.vhd
 VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/signals_variables/variable_in_process.vhd
+VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/file_type_support/filewrite_explicitopen.vhd
+VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/file_type_support/filewrite_implicitopen.vhd
 # Filtering testbenches
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/EvenSymSystFIR_tb.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/TestImpulsePkg.vhd
@@ -106,8 +108,8 @@ GETCOMP = python3 ../helpers/getcomp.py
 verify-vhdl:
 	@mkdir -p temp/ghdl
 	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
-	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
-	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
+	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 	@echo "Checking the syntax of $(NO_OF_VHDLS) files with ghdl"
 	@$(foreach FILE, $(VHDLS), \
 		echo "* $(FILE)"; \
@@ -124,6 +126,9 @@ TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_1.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_2.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_3.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/multiplexers/multiplexers_4.vhd
+# Filtering files with write operations
+TO_FILTER_IN_GHDL += examples/vivado/filewrite_explicitopen.vhd
+TO_FILTER_IN_GHDL += examples/vivado/filewrite_implicitopen.vhd
 
 
 VHDLS_FOR_GHDL = $(filter-out $(TO_FILTER_IN_GHDL), $(VHDLS))
@@ -133,8 +138,8 @@ NO_OF_VHDLS_FOR_GHDL = $(words $(VHDLS_FOR_GHDL))
 ghdl:
 	@mkdir -p temp/ghdl reports/$@
 	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
-	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
-	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
+	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 	@echo "Analysing $(NO_OF_VHDLS_FOR_GHDL) files with ghdl --synth"
 	@$(foreach FILE, $(VHDLS_FOR_GHDL), \
 		echo "* $(FILE)"; \
@@ -149,8 +154,8 @@ ghdl:
 ghdl-yosys:
 	@mkdir -p temp/ghdl reports/$@
 	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
-	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd
-	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
+	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 	@echo "Analysing $(NO_OF_VHDLS_FOR_GHDL) files with ghdl-yosys-plugin"
 	@$(foreach FILE, $(VHDLS_FOR_GHDL), \
 		echo "* $(FILE)"; \
@@ -188,15 +193,15 @@ NO_OF_VHDLS_FOR_ISE = $(words $(VHDLS_FOR_ISE))
 
 GENERAL_DEPS = \
 -f support/blackboxes.vhd \
--f examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/DelayLine.vhd \
--f examples/ise/HDL_Coding_Techniques/dsp/EvenSymSystFIR/FilterStage.vhd
+-f examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd \
+-f examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 
 ise-vhdl:
 	mkdir -p reports/$@
 	@echo "Analysing $(NO_OF_VHDLS_FOR_ISE) files with $@"
 	@$(foreach FILE, $(VHDLS_FOR_ISE), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/$@ --tool ise --run $(TASK) $(FILE) > \
+		fpga-hdl2bit --outdir temp/$@ --tool ise --run $(TASK) $(GENERAL_DEPS) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
