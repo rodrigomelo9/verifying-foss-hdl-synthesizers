@@ -21,6 +21,9 @@
 * [ghdl/ghdl#1208](https://github.com/ghdl/ghdl/issues/1208) - Solved
 * [ghdl/ghdl#1209](https://github.com/ghdl/ghdl/issues/1209) - Solved
 * [ghdl/ghdl#1212](https://github.com/ghdl/ghdl/issues/1212) - Solved
+* [ghdl/ghdl#1230](https://github.com/ghdl/ghdl/issues/1230) - Solved
+* [ghdl/ghdl#1231](https://github.com/ghdl/ghdl/issues/1231) - Solved
+* [ghdl/ghdl#1238](https://github.com/ghdl/ghdl/issues/1238)
 
 ## ghdl-yosys-plugin
 * [ghdl/ghdl-yosys-plugin#95](https://github.com/ghdl/ghdl-yosys-plugin/issues/95) - Solved
