@@ -80,6 +80,8 @@ VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/Filter
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/PolyIntrpFilterPkg.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/PolyIntrpFilter.vhd
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/SyncDelay.vhd
+# Not synthesizable
+VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/rams/ram_protected_sharedvar.vhd
 # Can't be implemented and unuseful for synthesis
 VHDLS_TO_FILTER += examples/vivado/black_box_1.vhd
 
@@ -181,8 +183,6 @@ TO_FILTER_IN_ISE += examples/ise/FPGA_Optimization/primitive_support/primitive_1
 ## Needs VHDL 2008 (unsupported)
 TO_FILTER_IN_ISE += examples/vivado/rams_sp_3d.vhd
 TO_FILTER_IN_ISE += examples/vivado/rams_sdp_3d.vhd
-## Unsupported for synthesis
-TO_FILTER_IN_ISE += examples/ise/HDL_Coding_Techniques/rams/ram_protected_sharedvar.vhd
 ## RAM using records seems unsupported
 TO_FILTER_IN_ISE += examples/vivado/rams_tdp_record.vhd
 
@@ -212,8 +212,6 @@ TO_FILTER_IN_VIVADO  = examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2d
 ## illegal syntax for subtype indication
 TO_FILTER_IN_VIVADO += examples/vivado/rams_sp_3d.vhd
 TO_FILTER_IN_VIVADO += examples/vivado/rams_sdp_3d.vhd
-## syntax error near protected
-TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/ram_protected_sharedvar.vhd
 
 
 VHDLS_FOR_VIVADO  = $(filter-out $(TO_FILTER_IN_VIVADO), $(VHDLS))

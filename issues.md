@@ -13,7 +13,7 @@
 * [YosysHQ/yosys#1810](https://github.com/YosysHQ/yosys/issues/1810)
 
 ## GHDL
-* [ghdl/ghdl#1190](https://github.com/ghdl/ghdl/issues/1190)
+* [ghdl/ghdl#1190](https://github.com/ghdl/ghdl/issues/1190) - Solved
 * [ghdl/ghdl#1193](https://github.com/ghdl/ghdl/issues/1193) - Solved
 * [ghdl/ghdl#1197](https://github.com/ghdl/ghdl/issues/1197) - Solved
 * [ghdl/ghdl#1198](https://github.com/ghdl/ghdl/issues/1198) - Solved
@@ -24,6 +24,8 @@
 * [ghdl/ghdl#1230](https://github.com/ghdl/ghdl/issues/1230) - Solved
 * [ghdl/ghdl#1231](https://github.com/ghdl/ghdl/issues/1231) - Solved
 * [ghdl/ghdl#1238](https://github.com/ghdl/ghdl/issues/1238)
+* [ghdl/ghdl#1244](https://github.com/ghdl/ghdl/issues/1244) - Solved
+* [ghdl/ghdl#1245](https://github.com/ghdl/ghdl/issues/1245)
 
 ## ghdl-yosys-plugin
 * [ghdl/ghdl-yosys-plugin#95](https://github.com/ghdl/ghdl-yosys-plugin/issues/95) - Solved
