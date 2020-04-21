@@ -8,7 +8,7 @@
 * [YosysHQ/yosys#1801](https://github.com/YosysHQ/yosys/issues/1801) - Closed (repeted)
   * See [YosysHQ/yosys#1688](https://github.com/YosysHQ/yosys/issues/1688)
 * [YosysHQ/yosys#1802](https://github.com/YosysHQ/yosys/issues/1802)
-* [YosysHQ/yosys#1807](https://github.com/YosysHQ/yosys/issues/1807)
+* [YosysHQ/yosys#1807](https://github.com/YosysHQ/yosys/issues/1807) - Solved
 * [YosysHQ/yosys#1809](https://github.com/YosysHQ/yosys/issues/1809)
 * [YosysHQ/yosys#1810](https://github.com/YosysHQ/yosys/issues/1810)
 

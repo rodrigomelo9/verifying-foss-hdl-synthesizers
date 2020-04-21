@@ -4,7 +4,8 @@
 # Collecting VHDL files
 #
 
-VHDLS  = $(shell find examples/ -type f -name '*.vhd' | sort)
+VHDLS = $(shell find examples/ -type f -name '*.vhd' | sort)
+
 
 # Filtering duplicated Files
 ## find -name '*.vhd' -type f -printf '%p %f\n' | sort -t ' ' -k 2,2 | uniq -f 1 --all-repeated=separate | cut -d' ' -f1
@@ -119,9 +120,13 @@ verify-vhdl:
 	)
 	@echo "DONE"
 
+#
+# Synthesis with GHDL
+#
+
 # Filtering Files with GHDL synthesis complains
 ## ERROR: latch infered for net
-TO_FILTER_IN_GHDL  = examples/vivado/latches.vhd
+TO_FILTER_IN_GHDL += examples/vivado/latches.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_cp.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_0.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_1.vhd
@@ -173,9 +178,15 @@ ghdl-yosys:
 # Synthesis with Xilinx tools
 #
 
+VHDL_DEPS = \
+-f support/blackboxes.vhd \
+-f examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd \
+-f examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+
+
 # Filtering Files with ISE complains
 ## Shared variable needed
-TO_FILTER_IN_ISE  = examples/vivado/asym_ram_tdp_read_first.vhd
+TO_FILTER_IN_ISE += examples/vivado/asym_ram_tdp_read_first.vhd
 TO_FILTER_IN_ISE += examples/vivado/asym_ram_tdp_write_first.vhd
 TO_FILTER_IN_ISE += examples/ise/HDL_Coding_Techniques/rams/rams_16a.vhd
 ## The INIT value is specified with an attribute, which is rejected by XST
@@ -191,30 +202,25 @@ VHDLS_FOR_ISE = $(filter-out $(TO_FILTER_IN_ISE), $(VHDLS))
 NO_OF_VHDLS_FOR_ISE = $(words $(VHDLS_FOR_ISE))
 
 
-GENERAL_DEPS = \
--f support/blackboxes.vhd \
--f examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd \
--f examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
-
 ise-vhdl:
 	mkdir -p reports/$@
 	@echo "Analysing $(NO_OF_VHDLS_FOR_ISE) files with $@"
 	@$(foreach FILE, $(VHDLS_FOR_ISE), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/$@ --tool ise --run $(TASK) $(GENERAL_DEPS) $(FILE) > \
+		fpga-hdl2bit --outdir temp/$@ --tool ise --run $(TASK) $(VHDL_DEPS) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
 
 # Filtering Files with Vivado complains
 ## Unsupported Asymmetric RAM pattern
-TO_FILTER_IN_VIVADO  = examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2d.vhd
+TO_FILTER_IN_VIVADO += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2d.vhd
 ## illegal syntax for subtype indication
 TO_FILTER_IN_VIVADO += examples/vivado/rams_sp_3d.vhd
 TO_FILTER_IN_VIVADO += examples/vivado/rams_sdp_3d.vhd
 
 
-VHDLS_FOR_VIVADO  = $(filter-out $(TO_FILTER_IN_VIVADO), $(VHDLS))
+VHDLS_FOR_VIVADO = $(filter-out $(TO_FILTER_IN_VIVADO), $(VHDLS))
 
 NO_OF_VHDLS_FOR_VIVADO = $(words $(VHDLS_FOR_VIVADO))
 
@@ -223,7 +229,7 @@ vivado-vhdl:
 	@echo "Analysing $(NO_OF_VHDLS_FOR_VIVADO) files with $@"
 	@$(foreach FILE, $(VHDLS_FOR_VIVADO), \
 		echo "* Analizyng $(FILE)"; \
-		fpga-hdl2bit --outdir temp/$@ --tool vivado --run $(TASK) $(GENERAL_DEPS) $(FILE) > \
+		fpga-hdl2bit --outdir temp/$@ --tool vivado --run $(TASK) $(VHDL_DEPS) $(FILE) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
