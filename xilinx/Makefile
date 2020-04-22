@@ -40,7 +40,7 @@ report-errors:
 	)
 
 clean:
-	rm -fr a.out temp
+	rm -fr a.out temp core *.edif
 
 clean-all: clean
-	rm -fr downloads examples reports
+	rm -fr examples reports

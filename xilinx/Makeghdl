@@ -85,6 +85,7 @@ VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/dsp/PolyIntrpFilter/SyncDe
 VHDLS_TO_FILTER += examples/ise/HDL_Coding_Techniques/rams/ram_protected_sharedvar.vhd
 # Can't be implemented and unuseful for synthesis
 VHDLS_TO_FILTER += examples/vivado/black_box_1.vhd
+VHDLS_TO_FILTER += examples/ise/VHDL_Language_Support/asserts/asserts_1.vhd
 
 
 VHDLS := $(filter-out $(VHDLS_TO_FILTER), $(VHDLS))
@@ -95,7 +96,7 @@ NO_OF_VHDLS = $(words $(VHDLS))
 # Docker
 #
 
-DOCKER_CMD = $(command -v winpty) docker run --rm -it -v /$(CURDIR)/..://wrk -w //wrk/xilinx ghdl/synth:beta
+DOCKER_CMD = docker run --rm -it -v /$(CURDIR)/..://wrk -w //wrk/xilinx ghdl/synth:beta
 
 #
 # ghdl analysis
@@ -124,8 +125,20 @@ verify-vhdl:
 # Synthesis with GHDL
 #
 
-# Filtering Files with GHDL synthesis complains
-## ERROR: latch infered for net
+# Filtering Files unsupported by the GHDL synthesis
+## Filtering files with write operations
+TO_FILTER_IN_GHDL += examples/vivado/filewrite_explicitopen.vhd
+TO_FILTER_IN_GHDL += examples/vivado/filewrite_implicitopen.vhd
+
+# Files filtered with an open issue
+## ghdl/ghdl#1238
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/multiplexers/multiplexers_3.vhd
+## ghdl/ghdl#1245
+TO_FILTER_IN_GHDL += examples/vivado/asym_ram_tdp_read_first.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/rams/rams_16a.vhd
+TO_FILTER_IN_GHDL += examples/vivado/rams_tdp_record.vhd
+TO_FILTER_IN_GHDL += examples/vivado/asym_ram_tdp_write_first.vhd
+## ghdl/ghdl-yosys-plugin#99
 TO_FILTER_IN_GHDL += examples/vivado/latches.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_cp.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_0.vhd
@@ -133,9 +146,6 @@ TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_1.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_2.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_3.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/multiplexers/multiplexers_4.vhd
-# Filtering files with write operations
-TO_FILTER_IN_GHDL += examples/vivado/filewrite_explicitopen.vhd
-TO_FILTER_IN_GHDL += examples/vivado/filewrite_implicitopen.vhd
 
 
 VHDLS_FOR_GHDL = $(filter-out $(TO_FILTER_IN_GHDL), $(VHDLS))

@@ -89,6 +89,11 @@ verify-verilog:
 # Filtering Files with Yosys complains
 ## Unsupported by Yosys and seems not standard (https://github.com/YosysHQ/yosys/issues/1800)
 TO_FILTER_IN_YOSYS += examples/vivado/parameter_1.v
+
+
+# Files filtered with an open issue
+## https://github.com/YosysHQ/yosys/issues/1799
+TO_FILTER_IN_YOSYS += examples/vivado/functions_constant.v
 ## True dual-port memories are not yet supported (https://github.com/YosysHQ/yosys/issues/1802)
 TO_FILTER_IN_YOSYS += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2c.v
 TO_FILTER_IN_YOSYS += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2d.v
