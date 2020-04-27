@@ -23,7 +23,7 @@
 * [ghdl/ghdl#1212](https://github.com/ghdl/ghdl/issues/1212) - Solved
 * [ghdl/ghdl#1230](https://github.com/ghdl/ghdl/issues/1230) - Solved
 * [ghdl/ghdl#1231](https://github.com/ghdl/ghdl/issues/1231) - Solved
-* [ghdl/ghdl#1238](https://github.com/ghdl/ghdl/issues/1238)
+* [ghdl/ghdl#1238](https://github.com/ghdl/ghdl/issues/1238) - Solved
 * [ghdl/ghdl#1244](https://github.com/ghdl/ghdl/issues/1244) - Solved
 * [ghdl/ghdl#1245](https://github.com/ghdl/ghdl/issues/1245)
 
@@ -33,7 +33,7 @@
 * [ghdl/ghdl-yosys-plugin#101](https://github.com/ghdl/ghdl-yosys-plugin/issues/101) - Solved
 * [ghdl/ghdl-yosys-plugin#102](https://github.com/ghdl/ghdl-yosys-plugin/issues/102) - Solved
 * [ghdl/ghdl-yosys-plugin#109](https://github.com/ghdl/ghdl-yosys-plugin/issues/109)
-* [ghdl/ghdl-yosys-plugin#110](https://github.com/ghdl/ghdl-yosys-plugin/issues/110)
+* [ghdl/ghdl-yosys-plugin#110](https://github.com/ghdl/ghdl-yosys-plugin/issues/110) - Solved
 * [ghdl/ghdl-yosys-plugin#111](https://github.com/ghdl/ghdl-yosys-plugin/issues/111)
 
 ## FPGADesignElements

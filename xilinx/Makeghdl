@@ -131,8 +131,6 @@ TO_FILTER_IN_GHDL += examples/vivado/filewrite_explicitopen.vhd
 TO_FILTER_IN_GHDL += examples/vivado/filewrite_implicitopen.vhd
 
 # Files filtered with an open issue
-## https://github.com/ghdl/ghdl/issues/1238
-TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/multiplexers/multiplexers_3.vhd
 ## https://github.com/ghdl/ghdl/issues/1245
 TO_FILTER_IN_GHDL += examples/vivado/asym_ram_tdp_read_first.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/rams/rams_16a.vhd
@@ -149,8 +147,6 @@ TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/multiplexers/multiplexer
 ## https://github.com/ghdl/ghdl-yosys-plugin/issues/109
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2a.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2b.vhd
-## https://github.com/ghdl/ghdl-yosys-plugin/issues/110
-TO_FILTER_IN_GHDL += examples/ise/Naming_Conventions/var_in_labelled_process.vhd
 ## https://github.com/ghdl/ghdl-yosys-plugin/issues/111
 TO_FILTER_IN_GHDL += examples/vivado/rams_sp_3d.vhd
 TO_FILTER_IN_GHDL += examples/vivado/rams_sdp_3d.vhd
