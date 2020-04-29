@@ -1,0 +1,36 @@
+name: verify
+
+on: push
+
+#on:
+#  schedule:
+#    - cron: '0 0 * * 0'
+
+jobs:
+
+  synth:
+    runs-on: ubuntu-latest
+    steps:
+#      - uses: docker://ghdl/synth:beta
+#        with:
+#          entrypoint: /bin/echo
+#          args: Hello
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.5'
+      - uses: actions/checkout@v2
+      - run: |
+          python -m pip install --upgrade pip
+          pip install -e 'git+https://gitlab.com/rodrigomelo9/pyfpga#egg=pyfpga'
+      - run:
+          make -C xilinx prepare
+      - uses: docker://ghdl/synth:beta
+        with:
+          entrypoint: make
+          args: -C xilinx yosys-vivado
+#      - run:
+#          make -C xilinx ghdl-yosys yosys-vivado
+#      - run:
+#          make -C FPGADesignElements prepare
+#      - run:
+#          make -C FPGADesignElements yosys-vivado
