@@ -1,10 +1,13 @@
 #!/usr/bin/make
 
-DOCKER_CMD = docker run --rm -it \
--v /opt:/opt \
--v /$(CURDIR)://wrk \
--w //wrk \
-verifying-foss-hdl-synthesizers
-
 prepare:
 	docker build -t verifying-foss-hdl-synthesizers -f Dockerfile .
+	make -C xilinx prepare
+	make -C FPGADesignElements prepare
+
+verify-ghdl:
+	make -C xilinx ghdl-yosys
+
+verify-yosys:
+	make -C xilinx yosys-vivado
+	make -C FPGADesignElements yosys-vivado

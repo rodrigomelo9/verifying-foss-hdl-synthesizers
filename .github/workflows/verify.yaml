@@ -13,16 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Prepare
-        run: |
+        run:
           make prepare
-          make -C xilinx prepare
-          make -C FPGADesignElements
-      - name: Verifying ghdl-yosys-plugin against Xilinx examples
+      - name: Verifying ghdl-yosys-plugin against several examples
         run:
-          bash helpers/docker_run.sh make -C xilinx ghdl-yosys
-      - name: Verifying yosys against Xilinx examples
+          bash helpers/docker_run.sh make verify-ghdl
+      - name: Verifying yosys against several examples
         run:
-          bash helpers/docker_run.sh make -C xilinx yosys-vivado
-      - name: Verifying yosys against FPGADesignElements examples
-        run:
-          bash helpers/docker_run.sh make -C FPGADesignElements yosys-vivado
+          bash helpers/docker_run.sh make verify-yosys
