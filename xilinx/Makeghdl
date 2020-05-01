@@ -93,12 +93,6 @@ VHDLS := $(filter-out $(VHDLS_TO_FILTER), $(VHDLS))
 NO_OF_VHDLS = $(words $(VHDLS))
 
 #
-# Docker
-#
-
-DOCKER_CMD = docker run --rm -it -v /$(CURDIR)/..://wrk -w //wrk/xilinx ghdl/synth:beta
-
-#
 # ghdl analysis
 #
 
@@ -111,13 +105,13 @@ GETCOMP = python3 ../helpers/getcomp.py
 
 verify-vhdl:
 	@mkdir -p temp/ghdl
-	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
-	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
-	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+	ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
+	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 	@echo "Checking the syntax of $(NO_OF_VHDLS) files with ghdl"
 	@$(foreach FILE, $(VHDLS), \
 		echo "* $(FILE)"; \
-		$(DOCKER_CMD) ghdl -s $(GHDL_FLAGS) $(FILE); \
+		ghdl -s $(GHDL_FLAGS) $(FILE); \
 	)
 	@echo "DONE"
 
@@ -158,32 +152,32 @@ NO_OF_VHDLS_FOR_GHDL = $(words $(VHDLS_FOR_GHDL))
 
 ghdl:
 	@mkdir -p temp/ghdl reports/$@
-	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
-	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
-	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+	ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
+	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 	@echo "Analysing $(NO_OF_VHDLS_FOR_GHDL) files with ghdl --synth"
 	@$(foreach FILE, $(VHDLS_FOR_GHDL), \
 		echo "* $(FILE)"; \
 		echo "  * Analysis"; \
-		$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) $(FILE); \
+		ghdl -a $(GHDL_FLAGS) $(FILE); \
 		echo "  * Synthesis"; \
-		$(DOCKER_CMD) ghdl --synth $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)) > \
+		ghdl --synth $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)) > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
 
 ghdl-yosys:
 	@mkdir -p temp/ghdl reports/$@
-	@$(DOCKER_CMD) ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
-	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
-	@$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+	ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
+	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 	@echo "Analysing $(NO_OF_VHDLS_FOR_GHDL) files with ghdl-yosys-plugin"
 	@$(foreach FILE, $(VHDLS_FOR_GHDL), \
 		echo "* $(FILE)"; \
 		echo "  * Analysis"; \
-		$(DOCKER_CMD) ghdl -a $(GHDL_FLAGS) $(FILE); \
+		ghdl -a $(GHDL_FLAGS) $(FILE); \
 		echo "  * Elaboration"; \
-		$(DOCKER_CMD) yosys -Q -m ghdl -p 'ghdl $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)); synth_xilinx -family xc7; write_edif -pvector bra yosys.edif' > \
+		yosys -Q -m ghdl -p 'ghdl $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)); synth_xilinx -family xc7; write_edif -pvector bra yosys.edif' > \
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
