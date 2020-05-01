@@ -16,5 +16,5 @@ Yosys/Vivado.
   * `quartus`: synthesis with Quartus.
 * Report erros with `make report-erros` (there must be reports).
 * Remove with `make clean` and `make clean-all`.
-* The default operation is implementation (`imp`) but can be changed to synthesis (`syn`) using
-`make TASK=syn <TARGET>`.
+* The default operation is synthesis (`syn`) but can be changed to implementation (`imp`) using
+`make TASK=imp <TARGET>`.

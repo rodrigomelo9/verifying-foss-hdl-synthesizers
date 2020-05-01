@@ -1,8 +1,6 @@
 #!/usr/bin/make
 
-ISE=/opt/Xilinx/ise
-VIVADO=/opt/Xilinx/vivado
-TASK=imp
+TASK=syn
 
 include Makeyosys
 include Makeghdl
