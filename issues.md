@@ -32,7 +32,7 @@
 * [ghdl/ghdl-yosys-plugin#99](https://github.com/ghdl/ghdl-yosys-plugin/issues/99)
 * [ghdl/ghdl-yosys-plugin#101](https://github.com/ghdl/ghdl-yosys-plugin/issues/101) - Solved
 * [ghdl/ghdl-yosys-plugin#102](https://github.com/ghdl/ghdl-yosys-plugin/issues/102) - Solved
-* [ghdl/ghdl-yosys-plugin#109](https://github.com/ghdl/ghdl-yosys-plugin/issues/109)
+* [ghdl/ghdl-yosys-plugin#109](https://github.com/ghdl/ghdl-yosys-plugin/issues/109) - Solved
 * [ghdl/ghdl-yosys-plugin#110](https://github.com/ghdl/ghdl-yosys-plugin/issues/110) - Solved
 * [ghdl/ghdl-yosys-plugin#111](https://github.com/ghdl/ghdl-yosys-plugin/issues/111)
 

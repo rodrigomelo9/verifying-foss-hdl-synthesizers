@@ -144,9 +144,6 @@ TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_1.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_2.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_3.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/multiplexers/multiplexers_4.vhd
-## https://github.com/ghdl/ghdl-yosys-plugin/issues/109
-TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2a.vhd
-TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2b.vhd
 ## https://github.com/ghdl/ghdl-yosys-plugin/issues/111
 TO_FILTER_IN_GHDL += examples/vivado/rams_sp_3d.vhd
 TO_FILTER_IN_GHDL += examples/vivado/rams_sdp_3d.vhd
