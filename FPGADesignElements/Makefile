@@ -88,7 +88,7 @@ iverilog:
 	@echo "DONE"
 
 verilator:
-	@echo "Analysing $(NO_OF_VERILOGS) files with iVerilog"
+	@echo "Analysing $(NO_OF_VERILOGS) files with Verilator"
 	@$(foreach FILE, $(VERILOGS), \
 		echo "* $(FILE)"; \
 		verilator --lint-only -Iexamples $(FILE); \
