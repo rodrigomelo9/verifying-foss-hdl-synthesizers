@@ -11,7 +11,7 @@ all: prepare
 #
 
 prepare:
-	git clone git@github.com:laforest/FPGADesignElements.git examples
+	git clone https://github.com/laforest/FPGADesignElements.git examples
 	sed -i -E "s/parameter\s+WORD_WIDTH\s*=\s*0/parameter WORD_WIDTH = 8/g" examples/*.v
 	sed -i -E "s/parameter\s+WORD_COUNT\s*=\s*0/parameter WORD_COUNT = 2/g" examples/*.v
 	sed -i -E "s/parameter\s+PULSE_LENGTH\s*=\s*0/parameter PULSE_LENGTH = 2/g" examples/*.v
