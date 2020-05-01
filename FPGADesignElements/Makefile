@@ -53,7 +53,9 @@ examples/Bit_Shifter.v \
 examples/Bitmask_Isolate_Rightmost_1_Bit.v \
 examples/Bitmask_Thermometer_to_Rightmost_1_Bit.v \
 examples/CarryIn_Binary.v \
+examples/CDC_Synchronizer.v \
 examples/Counter_Binary.v \
+examples/Demultiplexer_One_Hot.v \
 examples/Dyadic_Boolean_Operator.v \
 examples/Hamming_Distance.v \
 examples/Logarithm_of_Powers_of_Two.v \
@@ -63,7 +65,10 @@ examples/Multiplexer_Bitwise_2to1.v \
 examples/Number_of_Trailing_Zeros.v \
 examples/Population_Count.v \
 examples/Priority_Arbiter.v \
+examples/Pulse_Generator.v \
+examples/Pulse_Latch.v \
 examples/Register.v \
+examples/Register_Toggle.v \
 examples/Register_Pipeline.v \
 examples/Word_Reducer.v \
 examples/Word_Reverser.v
