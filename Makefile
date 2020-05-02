@@ -6,6 +6,9 @@ prepare:
 	make -C FPGADesignElements prepare
 
 verify-ghdl:
+	make -C xilinx ghdl
+
+verify-ghdl-yosys:
 	make -C xilinx ghdl-yosys
 
 verify-yosys:

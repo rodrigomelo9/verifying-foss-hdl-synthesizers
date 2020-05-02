@@ -1,10 +1,9 @@
 name: verify
 
-on: push
-
-#on:
-#  schedule:
-#    - cron: '0 0 * * 0'
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * 0'
 
 jobs:
 
@@ -15,9 +14,12 @@ jobs:
       - name: Prepare
         run:
           make prepare
-      - name: Verifying ghdl-yosys-plugin against several examples
+      - name: Verifying ghdl against several examples
         run:
           bash helpers/docker_run.sh make verify-ghdl
+      - name: Verifying ghdl-yosys-plugin against several examples
+        run:
+          bash helpers/docker_run.sh make verify-ghdl-yosys
       - name: Verifying yosys against several examples
         run:
           bash helpers/docker_run.sh make verify-yosys
