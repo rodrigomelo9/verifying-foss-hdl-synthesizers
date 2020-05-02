@@ -142,7 +142,7 @@ TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/multiplexers/multiplexer
 TO_FILTER_IN_GHDL += examples/vivado/rams_sp_3d.vhd
 TO_FILTER_IN_GHDL += examples/vivado/rams_sdp_3d.vhd
 ## https://github.com/ghdl/ghdl-yosys-plugin/issues/114
-TO_FILTER_IN_GHDL += examples/ise/FPGA_Optimization/primitive_support/primitive_1.vhd
+TO_FILTER_IN_GHDL += examples/ise/FPGA_Optimization/primitive_support/primitive_2.vhd
 
 
 VHDLS_FOR_GHDL = $(filter-out $(TO_FILTER_IN_GHDL), $(VHDLS))
