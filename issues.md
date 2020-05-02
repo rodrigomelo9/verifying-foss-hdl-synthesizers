@@ -35,6 +35,7 @@
 * [ghdl/ghdl-yosys-plugin#109](https://github.com/ghdl/ghdl-yosys-plugin/issues/109)
 * [ghdl/ghdl-yosys-plugin#110](https://github.com/ghdl/ghdl-yosys-plugin/issues/110) - Solved
 * [ghdl/ghdl-yosys-plugin#111](https://github.com/ghdl/ghdl-yosys-plugin/issues/111)
+* [ghdl/ghdl-yosys-plugin#114](https://github.com/ghdl/ghdl-yosys-plugin/issues/114)
 
 ## FPGADesignElements
 * [laforest/FPGADesignElements#4](https://github.com/laforest/FPGADesignElements/issues/4) - Closed (but notice added)
