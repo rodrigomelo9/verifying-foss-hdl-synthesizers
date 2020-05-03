@@ -1,0 +1,19 @@
+name: yosys
+
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+
+  synth:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: make build
+      - name: Prepare
+        run: make prepare
+      - name: Verifying yosys with several examples
+        run: bash helpers/docker_run.sh make verify-yosys

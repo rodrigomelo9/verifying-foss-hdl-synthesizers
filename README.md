@@ -1,9 +1,10 @@
-# Verifying FOSS HDL-synthesizers 
+# Verifying FOSS HDL-synthesizers
 
-![Verification Status](https://github.com/rodrigomelo9/verifying-foss-hdl-synthesizers/workflows/verify/badge.svg)
+![Yosys Verification](https://github.com/rodrigomelo9/verifying-foss-hdl-synthesizers/workflows/yosys/badge.svg)
+![GHDL Verification](https://github.com/rodrigomelo9/verifying-foss-hdl-synthesizers/workflows/ghdl/badge.svg)
+![ghdl-yosys-plugin Verification](https://github.com/rodrigomelo9/verifying-foss-hdl-synthesizers/workflows/ghdl-yosys-plugin/badge.svg)
 
-The aim of this project is to provide feedback about things supported by the vendor EDA tools,
-which presents problems for Yosys or GHDL.
+The aim of this project is to provide feedback about things supported by the vendor EDA tools, which presents problems for Yosys or GHDL.
 
 ## System prepare (GNU/Linux systems)
 

@@ -193,6 +193,6 @@ vivado-verilog:
 #
 
 verify-yosys:
-	@$(foreach FILE, $(VERILOGS), \
+	@$(foreach FILE, $(VERILOGS_FOR_YOSYS), \
 		fpga-hdl2bit --tool yosys-vivado --run $(TASK) $(YOSYS_DEPS) $(FILE) || exit 1; \
 	)
