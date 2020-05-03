@@ -28,7 +28,7 @@ prepare:
 	patch examples/vivado/rams_init_file.vhd                                                         < support/rams_init_file.diff
 	patch examples/vivado/roms_1.vhd                                                                 < support/roms_1.diff
 
-verify: verify-verilog verify-vhdl
+analyze: analyze-verilog analyze-vhdl
 
 report-errors:
 	@$(foreach DIR,$(wildcard reports/*), \

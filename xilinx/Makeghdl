@@ -103,7 +103,7 @@ GHDL_FLAGS = \
 
 GETCOMP = python3 ../helpers/getcomp.py
 
-verify-vhdl:
+analyze-vhdl:
 	@mkdir -p temp/ghdl
 	ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
 	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
@@ -240,3 +240,27 @@ vivado-vhdl:
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
+
+#
+# Verification
+#
+
+verify-ghdl:
+	@mkdir -p temp/ghdl
+	ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
+	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+	@$(foreach FILE, $(VHDLS_FOR_GHDL), \
+		ghdl -a $(GHDL_FLAGS) $(FILE); \
+		ghdl --synth $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)) || exit 1; \
+	)
+
+verify-ghdl-yosys:
+	@mkdir -p temp/ghdl
+	ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
+	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+	@$(foreach FILE, $(VHDLS_FOR_GHDL), \
+		ghdl -a $(GHDL_FLAGS) $(FILE); \
+		yosys -Q -m ghdl -p 'ghdl $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)); synth_xilinx -family xc7; write_edif -pvector bra yosys.edif' || exit 1; \
+	)

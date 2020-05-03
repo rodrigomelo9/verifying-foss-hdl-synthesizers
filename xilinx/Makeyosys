@@ -74,7 +74,7 @@ IVERILOG_EXTRA = \
 support/blackboxes.v \
 -yexamples/ise/HDL_Coding_Techniques/dsp/EvenSymTranspConvFIR_verilog
 
-verify-verilog:
+analyze-verilog:
 	@echo "Analysing $(NO_OF_VERILOGS) files with iVerilog"
 	@$(foreach FILE, $(VERILOGS), \
 		echo "* $(FILE)"; \
@@ -187,3 +187,12 @@ vivado-verilog:
 		$(addprefix reports/$@/, $(addsuffix .txt, $(notdir $(basename $(FILE))))); \
 	)
 	@echo "DONE"
+
+#
+# Verification
+#
+
+verify-yosys:
+	@$(foreach FILE, $(VERILOGS), \
+		fpga-hdl2bit --tool yosys-vivado --run $(TASK) $(YOSYS_DEPS) $(FILE) || exit 1; \
+	)

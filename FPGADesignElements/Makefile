@@ -77,10 +77,10 @@ VERILOGS := $(filter-out $(DEPS_TO_FILTER), $(VERILOGS))
 DEPS = $(addprefix -f , $(DEPS_TO_FILTER))
 
 #
-# Verify
+# analyze
 #
 
-verify: iverilog verilator
+analyze: iverilog verilator
 
 iverilog:
 	@echo "Analysing $(NO_OF_VERILOGS) files with iVerilog"
@@ -146,3 +146,12 @@ clean:
 
 clean-all: clean
 	rm -fr examples reports
+
+#
+# Verification
+#
+
+verify-yosys:
+	@$(foreach FILE, $(VERILOGS), \
+		fpga-hdl2bit --tool yosys-vivado --run $(TASK) $(DEPS) $(FILE) || exit 1; \
+	)

@@ -7,9 +7,9 @@ list) and synthesized/implemented with Yosys, ISE and Vivado.
 ## Instructions
 
 * Prepare the examples with `make` or `make prepare`.
-* Verify the examples with `make verify`, or:
-  * `make verify-verilog` for Verilog files.
-  * `make verify-vhdl` for VHDL files.
+* Analyze the examples with `make analyze`, or:
+  * `make analyze-verilog` for Verilog files.
+  * `make analyze-vhdl` for VHDL files.
 * Run synthesis with `make <TARGET>`, where `<TARGET>` can be:
   * `yosys`: generic Yosys synthesis.
   * `yosys-ise`: Yosis synthesis with ISE as backend.

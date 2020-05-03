@@ -6,7 +6,7 @@ Yosys/Vivado.
 ## Instructions
 
 * Prepare the examples with `make` or `make prepare`.
-* Verify the examples with `make verify`, or:
+* Analyze the examples with `make analyze`, or:
   * `make iverilog`.
   * `make verilator`.
 * Run synthesis with `make <TARGET>`, where `<TARGET>` can be:
