@@ -1,8 +1,6 @@
 #!/usr/bin/make
 
-ISE=/opt/Xilinx/ise
-VIVADO=/opt/Xilinx/vivado
-TASK=imp
+TASK=syn
 
 all: prepare
 
@@ -11,7 +9,7 @@ all: prepare
 #
 
 prepare:
-	git clone git@github.com:laforest/FPGADesignElements.git examples
+	git clone https://github.com/laforest/FPGADesignElements.git examples
 	sed -i -E "s/parameter\s+WORD_WIDTH\s*=\s*0/parameter WORD_WIDTH = 8/g" examples/*.v
 	sed -i -E "s/parameter\s+WORD_COUNT\s*=\s*0/parameter WORD_COUNT = 2/g" examples/*.v
 	sed -i -E "s/parameter\s+PULSE_LENGTH\s*=\s*0/parameter PULSE_LENGTH = 2/g" examples/*.v
@@ -55,7 +53,9 @@ examples/Bit_Shifter.v \
 examples/Bitmask_Isolate_Rightmost_1_Bit.v \
 examples/Bitmask_Thermometer_to_Rightmost_1_Bit.v \
 examples/CarryIn_Binary.v \
+examples/CDC_Synchronizer.v \
 examples/Counter_Binary.v \
+examples/Demultiplexer_One_Hot.v \
 examples/Dyadic_Boolean_Operator.v \
 examples/Hamming_Distance.v \
 examples/Logarithm_of_Powers_of_Two.v \
@@ -65,7 +65,10 @@ examples/Multiplexer_Bitwise_2to1.v \
 examples/Number_of_Trailing_Zeros.v \
 examples/Population_Count.v \
 examples/Priority_Arbiter.v \
+examples/Pulse_Generator.v \
+examples/Pulse_Latch.v \
 examples/Register.v \
+examples/Register_Toggle.v \
 examples/Register_Pipeline.v \
 examples/Word_Reducer.v \
 examples/Word_Reverser.v
@@ -74,10 +77,10 @@ VERILOGS := $(filter-out $(DEPS_TO_FILTER), $(VERILOGS))
 DEPS = $(addprefix -f , $(DEPS_TO_FILTER))
 
 #
-# Verify
+# analyze
 #
 
-verify: iverilog verilator
+analyze: iverilog verilator
 
 iverilog:
 	@echo "Analysing $(NO_OF_VERILOGS) files with iVerilog"
@@ -88,7 +91,7 @@ iverilog:
 	@echo "DONE"
 
 verilator:
-	@echo "Analysing $(NO_OF_VERILOGS) files with iVerilog"
+	@echo "Analysing $(NO_OF_VERILOGS) files with Verilator"
 	@$(foreach FILE, $(VERILOGS), \
 		echo "* $(FILE)"; \
 		verilator --lint-only -Iexamples $(FILE); \
@@ -143,3 +146,12 @@ clean:
 
 clean-all: clean
 	rm -fr examples reports
+
+#
+# Verification
+#
+
+verify-yosys:
+	@$(foreach FILE, $(VERILOGS), \
+		fpga-hdl2bit --tool yosys-vivado --run $(TASK) $(DEPS) $(FILE) || exit 1; \
+	)

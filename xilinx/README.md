@@ -7,9 +7,9 @@ list) and synthesized/implemented with Yosys, ISE and Vivado.
 ## Instructions
 
 * Prepare the examples with `make` or `make prepare`.
-* Verify the examples with `make verify`, or:
-  * `make verify-verilog` for Verilog files.
-  * `make verify-vhdl` for VHDL files.
+* Analyze the examples with `make analyze`, or:
+  * `make analyze-verilog` for Verilog files.
+  * `make analyze-vhdl` for VHDL files.
 * Run synthesis with `make <TARGET>`, where `<TARGET>` can be:
   * `yosys`: generic Yosys synthesis.
   * `yosys-ise`: Yosis synthesis with ISE as backend.
@@ -22,8 +22,8 @@ list) and synthesized/implemented with Yosys, ISE and Vivado.
   * `vivado-vhdl`: synthesis with Vivado.
 * Report erros with `make report-erros` (there must be reports).
 * Remove with `make clean` and `make clean-all`.
-* The default operation is implementation (`imp`) but can be changed to synthesis (`syn`) using
-`make TASK=syn <TARGET>`.
+* The default operation is synthesis (`syn`) but can be changed to implementation (`imp`) using
+`make TASK=imp <TARGET>`.
 
 ## Yosys remarks
 
@@ -39,7 +39,3 @@ list) and synthesized/implemented with Yosys, ISE and Vivado.
     * examples/ise/HDL_Coding_Techniques/rams/asymmetric_ram_2c.v
     * examples/ise/HDL_Coding_Techniques/rams/asymmetric_write_first_2.v
 * Yosys don't supports TDP rams with more than one write port.
-
-# GHDL remarks
-
-* The script is run using the Docker image provided by the plugin project.
