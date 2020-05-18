@@ -14,6 +14,6 @@ jobs:
       - name: Build
         run: make build
       - name: Prepare
-        run: make prepare
-      - name: Verifying ghdl with several examples
-        run: bash helpers/docker_run.sh make verify-ghdl
+        run: make -C xilinx prepare
+      - name: Verifying ghdl with examples from Xilinx
+        run: bash helpers/docker_run.sh make -C xilinx verify-ghdl

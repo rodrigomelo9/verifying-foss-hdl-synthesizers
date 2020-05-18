@@ -15,5 +15,7 @@ jobs:
         run: make build
       - name: Prepare
         run: make prepare
-      - name: Verifying yosys with several examples
-        run: bash helpers/docker_run.sh make verify-yosys
+      - name: Verifying yosys with examples from Xilinx
+        run: bash helpers/docker_run.sh make -C xilinx verify-yosys
+      - name: Verifying yosys with examples from FPGADesignElements
+        run: bash helpers/docker_run.sh make -C FPGADesignElements verify-yosys
