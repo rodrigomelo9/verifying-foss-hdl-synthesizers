@@ -130,6 +130,14 @@ TO_FILTER_IN_GHDL += examples/vivado/asym_ram_tdp_read_first.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/rams/rams_16a.vhd
 TO_FILTER_IN_GHDL += examples/vivado/rams_tdp_record.vhd
 TO_FILTER_IN_GHDL += examples/vivado/asym_ram_tdp_write_first.vhd
+## https://github.com/ghdl/ghdl-yosys-plugin/issues/99
+TO_FILTER_IN_GHDL += examples/vivado/latches.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_cp.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_0.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_1.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_2.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_3.vhd
+TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/multiplexers/multiplexers_4.vhd
 ## https://github.com/ghdl/ghdl-yosys-plugin/issues/114
 TO_FILTER_IN_GHDL += examples/ise/FPGA_Optimization/primitive_support/primitive_2.vhd
 
