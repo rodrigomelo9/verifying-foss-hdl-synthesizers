@@ -97,9 +97,9 @@ NO_OF_VHDLS = $(words $(VHDLS))
 #
 
 GHDL_FLAGS = \
--fsynopsys -fexplicit -frelaxed \
+--std=08 -fsynopsys -fexplicit -frelaxed \
 --warn-no-hide --warn-no-shared --warn-no-library \
--Ptemp/ghdl --std=08 --workdir=temp/ghdl
+-Ptemp/ghdl --workdir=temp/ghdl
 
 GETCOMP = python3 ../helpers/getcomp.py
 
@@ -141,14 +141,7 @@ TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/latches/latches_3.vhd
 TO_FILTER_IN_GHDL += examples/ise/HDL_Coding_Techniques/multiplexers/multiplexers_4.vhd
 ## https://github.com/ghdl/ghdl-yosys-plugin/issues/114
 TO_FILTER_IN_GHDL += examples/ise/FPGA_Optimization/primitive_support/primitive_2.vhd
-## https://github.com/ghdl/ghdl/issues/1477
-TO_FILTER_IN_GHDL += examples/vivado/bytewrite_tdp_ram_nc.vhd
-TO_FILTER_IN_GHDL += examples/vivado/bytewrite_tdp_ram_rf.vhd
-TO_FILTER_IN_GHDL += examples/vivado/bytewrite_tdp_ram_wf.vhd
-TO_FILTER_IN_GHDL += examples/vivado/rams_tdp_rf_rf.vhd:
-TO_FILTER_IN_GHDL += examples/vivado/rams_tdp_rf_rf.vhd
-TO_FILTER_IN_GHDL += examples/vivado/simple_dual_one_clock.vhd
-TO_FILTER_IN_GHDL += examples/vivado/simple_dual_two_clocks.vhd
+
 
 VHDLS_FOR_GHDL = $(filter-out $(TO_FILTER_IN_GHDL), $(VHDLS))
 
