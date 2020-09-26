@@ -25,7 +25,8 @@
 * [ghdl/ghdl#1231](https://github.com/ghdl/ghdl/issues/1231) - Solved
 * [ghdl/ghdl#1238](https://github.com/ghdl/ghdl/issues/1238) - Solved
 * [ghdl/ghdl#1244](https://github.com/ghdl/ghdl/issues/1244) - Solved
-* [ghdl/ghdl#1245](https://github.com/ghdl/ghdl/issues/1245)
+* [ghdl/ghdl#1245](https://github.com/ghdl/ghdl/issues/1245) - Closed (incorrect models)
+* [ghdl/ghdl#1477](https://github.com/ghdl/ghdl/issues/1477)
 
 ## ghdl-yosys-plugin
 * [ghdl/ghdl-yosys-plugin#95](https://github.com/ghdl/ghdl-yosys-plugin/issues/95) - Solved

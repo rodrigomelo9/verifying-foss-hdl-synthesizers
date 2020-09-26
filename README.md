@@ -24,4 +24,4 @@ It is employed for the CI of the repository and can be used to run in any GNU/Li
 
 ## License
 
-Yosys-versus is distributed under [ISC](LICENSE) license.
+This project is distributed under [ISC](LICENSE) license.
