@@ -46,10 +46,4 @@
 * [laforest/FPGADesignElements#8](https://github.com/laforest/FPGADesignElements/issues/8) - Solved
 
 ## TODO (to report)
-* FPGADesignElements/Bitmask_Next_with_Constant_Popcount_ntz.v
-* FPGADesignElements/Bitmask_Next_with_Constant_Popcount_pop.v
-* FPGADesignElements/Number_of_Leading_Zeros.v
-* FPGADesignElements/Pipeline_FIFO_Buffer.v 
-* FPGADesignElements/Pipeline_Merge_Priority.v
-* FPGADesignElements/Priority_Encoder.v
-* FPGADesignElements/Turn_Off_Rightmost_Contiguous_1_Bits.v
+* FPGADesignElements/Pipeline_FIFO_Buffer.v

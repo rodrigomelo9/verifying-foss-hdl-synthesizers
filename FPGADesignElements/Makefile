@@ -40,13 +40,8 @@ VERILOGS  = $(shell find examples/ -type f -name '*.v' | sort)
 ## Not synthesizable
 VERILOGS_TO_FILTER  = examples/Simulation_Clock.v
 ## ERRORs
-VERILOGS_TO_FILTER += examples/Bitmask_Next_with_Constant_Popcount_ntz.v
-VERILOGS_TO_FILTER += examples/Bitmask_Next_with_Constant_Popcount_pop.v
-VERILOGS_TO_FILTER += examples/Number_of_Leading_Zeros.v
-VERILOGS_TO_FILTER += examples/Pipeline_FIFO_Buffer.v 
-VERILOGS_TO_FILTER += examples/Pipeline_Merge_Priority.v
-VERILOGS_TO_FILTER += examples/Priority_Encoder.v
-VERILOGS_TO_FILTER += examples/Turn_Off_Rightmost_Contiguous_1_Bits.v
+VERILOGS_TO_FILTER += examples/Pipeline_FIFO_Buffer.v
+
 
 VERILOGS := $(filter-out $(VERILOGS_TO_FILTER), $(VERILOGS))
 
