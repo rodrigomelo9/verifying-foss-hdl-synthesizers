@@ -16,6 +16,7 @@ To simplify tools and options handling, `fpga-hdl2bit` from the [PyFPGA](https:/
 A Dockerfile, based on `ghdl/synth:beta` from the [ghdl/docker](https://github.com/ghdl/docker) project (which supports the three tools under test), is provided.
 It is employed for the CI of the repository and can be used to run in any GNU/Linux with [Docker installed](https://docs.docker.com/install) on:
 * `make build` creates the needed Docker image.
+* `bash helpers/docker_run.sh make clean-all` to clean the generated files of a previous run.
 * `make prepare` downloads the examples (they are not part of the repository).
 * `bash helpers/docker_run.sh make verify-yosys` to verify `yosys`.
 * `bash helpers/docker_run.sh make verify-ghdl` to verify `ghdl --synth`.
