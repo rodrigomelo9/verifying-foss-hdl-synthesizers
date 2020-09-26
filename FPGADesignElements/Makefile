@@ -10,23 +10,25 @@ all: prepare
 
 prepare:
 	git clone https://github.com/laforest/FPGADesignElements.git examples
-	sed -i -E "s/parameter\s+WORD_WIDTH\s*=\s*0/parameter WORD_WIDTH = 8/g" examples/*.v
-	sed -i -E "s/parameter\s+WORD_COUNT\s*=\s*0/parameter WORD_COUNT = 2/g" examples/*.v
+	sed -i -E "s/parameter\s+ADDR_WIDTH\s*=\s*0/parameter ADDR_WIDTH = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+BINARY_WIDTH\s*=\s*0/parameter BINARY_WIDTH = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+COUNT_WIDTH\s*=\s*0/parameter COUNT_WIDTH = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+DEPTH\s*=\s*0/parameter DEPTH = 256/g" examples/*.v
+	sed -i -E "s/parameter\s+IMPLEMENTATION\s*=\s*\"\"/parameter IMPLEMENTATION = \"MUX\"/g" examples/*.v
+	sed -i -E "s/parameter\s+INPUT_ADDR_BASE\s*=\s*0/parameter INPUT_ADDR_BASE = 3/g" examples/*.v
+	sed -i -E "s/parameter\s+INPUT_COUNT\s*=\s*0/parameter INPUT_COUNT = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+OUTPUT_ADDR_WIDTH\s*=\s*0/parameter OUTPUT_ADDR_WIDTH = 3/g" examples/*.v
+	sed -i -E "s/parameter\s+OUTPUT_COUNT\s*=\s*0/parameter OUTPUT_COUNT = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+OUTPUT_WIDTH\s*=\s*0/parameter OUTPUT_WIDTH = 8/g" examples/*.v
+	sed -i -E "s/parameter\s+PIPE_DEPTH\s*=\s*0/parameter PIPE_DEPTH = 2/g" examples/*.v
 	sed -i -E "s/parameter\s+PULSE_LENGTH\s*=\s*0/parameter PULSE_LENGTH = 2/g" examples/*.v
+	sed -i -E "s/parameter\s+WORD_COUNT\s*=\s*0/parameter WORD_COUNT = 2/g" examples/*.v
+	sed -i -E "s/parameter\s+WORD_WIDTH\s*=\s*0/parameter WORD_WIDTH = 8/g" examples/*.v
 	sed -i -E "s/parameter\s+WORD_WIDTH_A\s*=\s*0/parameter WORD_WIDTH_A = 8/g" examples/*.v
 	sed -i -E "s/parameter\s+WORD_WIDTH_B\s*=\s*0/parameter WORD_WIDTH_B = 8/g" examples/*.v
-	sed -i -E "s/parameter\s+ADDR_WIDTH\s*=\s*0/parameter ADDR_WIDTH = 3/g" examples/*.v
-	sed -i -E "s/parameter\s+INPUT_ADDR_BASE\s*=\s*0/parameter INPUT_ADDR_BASE = 3/g" examples/*.v
-	sed -i -E "s/parameter\s+OUTPUT_ADDR_WIDTH\s*=\s*0/parameter OUTPUT_ADDR_WIDTH = 3/g" examples/*.v
-	sed -i -E "s/parameter\s+INPUT_COUNT\s*=\s*0/parameter INPUT_COUNT = 3/g" examples/*.v
-	sed -i -E "s/parameter\s+BINARY_WIDTH\s*=\s*0/parameter BINARY_WIDTH = 8/g" examples/*.v
-	sed -i -E "s/parameter\s+OUTPUT_WIDTH\s*=\s*0/parameter OUTPUT_WIDTH = 8/g" examples/*.v
-	sed -i -E "s/parameter\s+OUTPUT_COUNT\s*=\s*0/parameter OUTPUT_COUNT = 8/g" examples/*.v
-	sed -i -E "s/parameter\s+PIPE_DEPTH\s*=\s*0/parameter PIPE_DEPTH = 2/g" examples/*.v
 	sed -i -E "s/parameter\s+WORD_WIDTH_IN\s*=\s*0/parameter WORD_WIDTH_IN = 8/g" examples/*.v
 	sed -i -E "s/parameter\s+WORD_WIDTH_OUT\s*=\s*0/parameter WORD_WIDTH_OUT = 8/g" examples/*.v
-	sed -i -E "s/parameter\s+IMPLEMENTATION\s*=\s*\"\"/parameter IMPLEMENTATION = \"MUX\"/g" examples/*.v
-	sed -i -E "s/parameter\s+EDGE_TYPE\s*=\s*\"\"/parameter EDGE_TYPE = \"POS\"/g" examples/*.v
+	sed -i -E "s/NonExistentModuleForErrorChecking.*();//g" examples/*.v
 
 #
 # Collecting Verilog files
@@ -37,6 +39,14 @@ VERILOGS  = $(shell find examples/ -type f -name '*.v' | sort)
 # Filtering Files
 ## Not synthesizable
 VERILOGS_TO_FILTER  = examples/Simulation_Clock.v
+## ERRORs
+VERILOGS_TO_FILTER += examples/Bitmask_Next_with_Constant_Popcount_ntz.v
+VERILOGS_TO_FILTER += examples/Bitmask_Next_with_Constant_Popcount_pop.v
+VERILOGS_TO_FILTER += examples/Number_of_Leading_Zeros.v
+VERILOGS_TO_FILTER += examples/Pipeline_FIFO_Buffer.v 
+VERILOGS_TO_FILTER += examples/Pipeline_Merge_Priority.v
+VERILOGS_TO_FILTER += examples/Priority_Encoder.v
+VERILOGS_TO_FILTER += examples/Turn_Off_Rightmost_Contiguous_1_Bits.v
 
 VERILOGS := $(filter-out $(VERILOGS_TO_FILTER), $(VERILOGS))
 
@@ -45,6 +55,7 @@ NO_OF_VERILOGS = $(words $(VERILOGS))
 DEPS_TO_FILTER = \
 examples/Adder_Subtractor_Binary.v \
 examples/Address_Decoder_Behavioural.v \
+examples/Adder_Subtractor_Binary_Saturating.v \
 examples/Annuller.v \
 examples/Arithmetic_Predicates_Binary.v \
 examples/Binary_to_One_Hot.v \
@@ -53,9 +64,12 @@ examples/Bit_Shifter.v \
 examples/Bitmask_Isolate_Rightmost_1_Bit.v \
 examples/Bitmask_Thermometer_to_Rightmost_1_Bit.v \
 examples/CarryIn_Binary.v \
-examples/CDC_Synchronizer.v \
+examples/CDC_Bit_Synchronizer.v \
+examples/CDC_Word_Synchronizer.v \
 examples/Counter_Binary.v \
+examples/Debouncer_Low_Latency.v \
 examples/Demultiplexer_One_Hot.v \
+examples/Duty_Cycle_Generator.v \
 examples/Dyadic_Boolean_Operator.v \
 examples/Hamming_Distance.v \
 examples/Logarithm_of_Powers_of_Two.v \
@@ -65,11 +79,17 @@ examples/Multiplexer_Bitwise_2to1.v \
 examples/Number_of_Trailing_Zeros.v \
 examples/Population_Count.v \
 examples/Priority_Arbiter.v \
+examples/Pulse_Divider.v \
 examples/Pulse_Generator.v \
 examples/Pulse_Latch.v \
 examples/Register.v \
 examples/Register_Toggle.v \
 examples/Register_Pipeline.v \
+examples/Round_Robin_Arbiter.v \
+examples/Pipeline_Fork_Lazy.v \
+examples/Pipeline_Merge_Round_Robin.v \
+examples/Pipeline_Skid_Buffer.v \
+examples/Width_Adjuster.v \
 examples/Word_Reducer.v \
 examples/Word_Reverser.v
 
