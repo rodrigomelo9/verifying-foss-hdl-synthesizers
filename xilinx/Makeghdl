@@ -106,8 +106,9 @@ GETCOMP = python3 ../helpers/getcomp.py
 analyze-vhdl:
 	@mkdir -p temp/ghdl
 	ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
-	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
-	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+	#TODO: XSTUG
+	#ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	#ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 	@echo "Checking the syntax of $(NO_OF_VHDLS) files with ghdl"
 	@$(foreach FILE, $(VHDLS), \
 		echo "* $(FILE)"; \
@@ -149,8 +150,9 @@ NO_OF_VHDLS_FOR_GHDL = $(words $(VHDLS_FOR_GHDL))
 ghdl:
 	@mkdir -p temp/ghdl reports/$@
 	ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
-	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
-	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+	# TODO: XSTUG
+	#ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	#ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 	@echo "Analysing $(NO_OF_VHDLS_FOR_GHDL) files with ghdl --synth"
 	@$(foreach FILE, $(VHDLS_FOR_GHDL), \
 		echo "* $(FILE)"; \
@@ -165,8 +167,9 @@ ghdl:
 ghdl-yosys:
 	@mkdir -p temp/ghdl reports/$@
 	ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
-	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
-	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+	# TODO: XSTUG
+	#ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	#ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 	@echo "Analysing $(NO_OF_VHDLS_FOR_GHDL) files with ghdl-yosys-plugin"
 	@$(foreach FILE, $(VHDLS_FOR_GHDL), \
 		echo "* $(FILE)"; \
@@ -183,9 +186,11 @@ ghdl-yosys:
 #
 
 VHDL_DEPS = \
--f support/blackboxes.vhd \
--f examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd \
--f examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+-f support/blackboxes.vhd
+# TODO: XSTUG
+# \
+#-f examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd \
+#-f examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 
 
 # Filtering Files with ISE complains
@@ -245,18 +250,21 @@ vivado-vhdl:
 verify-ghdl:
 	@mkdir -p temp/ghdl
 	ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
-	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
-	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+	# TODO: XSTUG
+	#ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	#ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 	@$(foreach FILE, $(VHDLS_FOR_GHDL), \
 		ghdl -a $(GHDL_FLAGS) $(FILE); \
 		ghdl --synth $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)) || exit 1; \
+		echo "ghdl -a $(GHDL_FLAGS) $(FILE);ghdl --synth $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)) || exit 1;"; \
 	)
 
 verify-ghdl-yosys:
 	@mkdir -p temp/ghdl
 	ghdl -a --work=unisim $(GHDL_FLAGS) support/blackboxes.vhd
-	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
-	ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
+	# TODO: XSTUG
+	#ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/DelayLine.vhd
+	#ghdl -a $(GHDL_FLAGS) examples/ise/HDL_Coding_Techniques/dsp/OddSymTranspConvFIR/FilterStage.vhd
 	@$(foreach FILE, $(VHDLS_FOR_GHDL), \
 		ghdl -a $(GHDL_FLAGS) $(FILE); \
 		yosys -Q -m ghdl -p 'ghdl $(GHDL_FLAGS) $(shell $(GETCOMP) $(FILE)); synth_xilinx -family xc7; write_edif -pvector bra yosys.edif' || exit 1; \
